@@ -6,25 +6,25 @@
 
 ## Situational Matrix (Quick Reference)
 
-The matrix classifies each sales situation by two dimensions: customer **perception of need** (low-high) and customer **perception of value** (low-high). It is a situational model, not a rigid process.
+Two dimensions: customer **perception of need** (low-high) and **perception of value** (low-high). Situational model, not rigid process.
 
-| Quadrant | Need | Value | Customer Position | Primary RSS Units |
-|----------|------|-------|-------------------|-------------------|
-| Q3: Entry | Low | Low | Unaware/indifferent -- no perceived problem or solution awareness | U1 Positioning, U2 Discovering |
-| Q4: Latent Need | Low | High | Appreciates product conceptually but feels no urgency to act | U2 Discovering, U3 Building |
-| Q2: Unconvinced | High | Low | Recognises need but unconvinced by this solution or cannot differentiate from competitors | U4 Presenting, U5 Resolving |
-| Q1: Ready | High | High | Sees both need and value -- ready to commit | U6 Securing |
-| Centre: Transition | Mid | Mid | Partial awareness of both need and value -- being built | U3 Building |
+| Quadrant | Need | Value | Customer Position | Primary Units |
+|----------|------|-------|-------------------|---------------|
+| Q3: Entry | Low | Low | Unaware/indifferent -- no perceived problem | U1, U2 |
+| Q4: Latent Need | Low | High | Appreciates product but no urgency | U2, U3 |
+| Q2: Unconvinced | High | Low | Recognises need, unconvinced by solution | U4, U5 |
+| Q1: Ready | High | High | Sees need and value -- ready to commit | U6 |
+| Centre | Mid | Mid | Partial awareness, being built | U3 |
 
 ### Matrix Movement Principles
 
 - **Customer determines position:** their perception of need and value dictates which unit to use -- always follow the customer's lead
-- **"N" pattern is default, not mandatory:** Positioning -> Discovering -> Building -> Presenting -> Resolving -> Securing, but move flexibly as perception shifts
-- **Applies at two levels:** the overall sales process (across meetings) and each individual encounter
-- **Every meeting restarts positioning:** re-establish purpose at the start of each new interaction
-- **Regression is normal:** customer perception can shift backward; be prepared to return to earlier units
-- **Low-to-High Need movement** driven by Discovering (joint definition) and Building (impact/urgency)
-- **Low-to-High Value movement** driven by Presenting (solution benefits tied to defined needs)
+- **"N" pattern is default, not mandatory:** Positioning -> Discovering -> Building -> Presenting -> Resolving -> Securing; move flexibly as perception shifts
+- **Applies at two levels:** overall sales process (across meetings) and each individual encounter
+- **Every meeting restarts positioning:** re-establish purpose at the start of each interaction
+- **Regression is normal:** perception can shift backward; return to earlier units as needed
+- **Need movement** driven by Discovering (joint definition) and Building (impact/urgency)
+- **Value movement** driven by Presenting (solution benefits tied to defined needs)
 
 ---
 
@@ -32,56 +32,35 @@ The matrix classifies each sales situation by two dimensions: customer **percept
 
 ### Unit 1: Positioning
 
-**Purpose:** Move from "just another salesperson" to a credible, trusted resource; establish who you are, what you offer, and why this conversation matters.
+**Purpose:** Establish credibility and trust; communicate who you are, what you offer, and why this conversation matters.
 
-**Core techniques:**
-- **General Benefit Statement (GBS):** mention a relevant possible need, describe how you have helped others, request permission to proceed
-- **Pre-call planning:** research company, industry, personnel before contact
-- **Style management:** stress empathy, illustrate expertise, temper ego and enthusiasm
-- **Positioning throughout:** re-position when transitioning topics, phases, or meetings
+**Techniques:** GBS (mention relevant need, describe how you helped others, request permission) | Pre-call planning (research company/industry/personnel) | Style management (stress empathy, illustrate expertise, temper ego/enthusiasm) | Re-position when transitioning topics, phases, or meetings
 
-**Progression indicator:** Customer understands purpose, grants permission to proceed, begins sharing information.
+**Progression:** Customer understands purpose, grants permission to proceed, begins sharing information.
 
 ### Unit 2: Discovering
 
 **Purpose:** Arrive at a joint definition of needs -- collaborative, two-sided, not interrogation.
 
-**Core techniques:**
-- **General-to-specific strategy:** Assumptions -> Situation -> Problems -> Needs
-- **Open questions:** who, what, when, where, how, why -- explore situation, problems, feelings
-- **Closed questions:** confirm understanding, regain focus (use sparingly)
-- **Share information:** maintain conversational flow, give info to get info
-- **Support:** acknowledge feelings, agree where possible, use customer's own words
-- **Reamplification paraphrase:** restate with amplification to confirm understanding
-- **Problem vs. need distinction:** a problem is an existing condition; a need implies desire to act -- convert problems to needs through confirmation
+**Techniques:** General-to-specific strategy (Assumptions -> Situation -> Problems -> Needs) | Open questions (who/what/when/where/how/why) | Closed questions to confirm (sparingly) | Share information to maintain conversation | Support (acknowledge feelings, use customer's words) | Reamplification paraphrase | Problem vs. need: problem = existing condition, need = desire to act -- convert through confirmation
 
-**Progression indicator:** Both parties can articulate a shared, specific definition of needs; problems converted to confirmed needs.
+**Progression:** Both parties articulate shared, specific definition of needs; problems converted to confirmed needs.
 
 ### Unit 3: Building
 
 **Purpose:** Deepen customer's perception of need by revealing full impact and consequence; create urgency to act.
 
-**Core techniques:**
-- **Critical questions:** open-ended questions causing customer to think about impact/consequences (vs. informational questions seeking facts)
-- **Projecting:** "If you could... how would that make you feel?"
-- **Calculating:** quantify impact in tangible terms (hours, dollars, units)
-- **Examples and analogies:** draw mental pictures of before/after states
-- **Position-Build strategy for indifferent customers:** support satisfaction, get them talking, listen for partial problems, build on those
+**Techniques:** Critical questions (open-ended, cause customer to think about impact/consequences) | Projecting ("If you could... how would that feel?") | Calculating (quantify impact in hours/dollars/units) | Examples and analogies (before/after mental pictures) | Position-Build for indifferent customers (support satisfaction, listen for partial problems, build on those)
 
-**Progression indicator:** Customer articulates impact in own words, demonstrates urgency, quantifies cost of inaction.
+**Progression:** Customer articulates impact in own words, demonstrates urgency, quantifies cost of inaction.
 
 ### Unit 4: Presenting
 
 **Purpose:** Show how your solution addresses discovered and built needs -- sell the right solution, not just a product.
 
-**Core techniques:**
-- **Position the transition:** signal shift from exploring needs to discussing solutions
-- **Present options (general to specific):** involve customer, include pros and cons, recommend best solution
-- **Customer involvement:** acceptance increases with joint development; objections surface as discussion points
-- **Treat the whole problem:** avoid premature introduction of benefits; present only after full needs are understood
-- **Honesty about trade-offs:** be transparent about pros and cons to build trust
+**Techniques:** Position the transition (signal shift to solutions) | Present options general-to-specific (pros/cons, recommend best) | Customer involvement (joint development increases acceptance) | Treat the whole problem (no premature benefits) | Honesty about trade-offs
 
-**Progression indicator:** Customer can articulate how solution addresses needs; demonstrates ownership ("our plan"); concerns surface as discussion, not blockers.
+**Progression:** Customer articulates how solution addresses needs; demonstrates ownership ("our plan"); concerns surface as discussion, not blockers.
 
 ### Unit 5: Resolving Concerns
 
@@ -99,7 +78,7 @@ The matrix classifies each sales situation by two dimensions: customer **percept
 4. **Answer** with proof, correct information, or pros-vs-cons weighing
 5. **Check** for understanding and acceptance
 
-**Progression indicator:** Concerns identified, addressed with appropriate tactic, customer confirms resolution, ready to move toward commitment.
+**Progression:** Concerns identified, addressed with appropriate tactic, customer confirms resolution, ready for commitment.
 
 ---
 
@@ -133,17 +112,11 @@ The matrix classifies each sales situation by two dimensions: customer **percept
 3. Provide observation-based feedback (strengths first, then areas to improve)
 4. Develop action steps for next call (role-play, question review, commitment to try new behaviour)
 
-**Observation focus areas (per RSS unit):**
-- **Positioning:** GBS quality, purpose established, rapport built
-- **Discovering:** open/closed question balance, joint need definition, full exploration
-- **Building:** critical questions used, impact/consequence explored, urgency created
-- **Presenting:** options presented with pros/cons, customer involved, solution tied to needs
-- **Resolving:** concerns confirmed and acknowledged, appropriate resolution tactic used
-- **Securing:** commitment requested, next steps outlined, referrals sought
+**Observation focus:** Positioning (GBS, purpose, rapport) | Discovering (question balance, joint definition) | Building (critical questions, impact, urgency) | Presenting (options, customer involvement, need alignment) | Resolving (confirm, acknowledge, resolve) | Securing (commitment, next steps, referrals)
 
-**Coaching scale:** 1-6 numerical (detailed) or D-G-E simplified (D = Needs Development, G = Good, E = Excellent)
+**Scale:** 1-6 numerical or D-G-E (Needs Development / Good / Excellent)
 
-**Catalyst-coach model:** encourage own approaches, learn from mistakes, plan support, recognise successes, provide developmental feedback -- never dictate, punish, or take over.
+**Catalyst-coach model:** encourage own approaches, learn from mistakes, recognise successes, developmental feedback -- never dictate, punish, or take over.
 
 ---
 
@@ -153,11 +126,11 @@ The matrix classifies each sales situation by two dimensions: customer **percept
 
 **Pipeline stages map to RSS units:** Positioning -> Discovering -> Building -> Presenting -> Resolving -> Securing (each stage defined by customer perception state)
 
-**Activity metrics (quantitative):** customer contacts, demonstrations, surveys, proposals, call volume/frequency
+**Activity metrics (quantitative):** contacts, demos, surveys, proposals, call volume/frequency
 
-**Skill metrics (qualitative):** matrix reading accuracy, question quality, GBS effectiveness, building capability, presentation-to-need alignment, concern resolution skill, securing effectiveness
+**Skill metrics (qualitative):** matrix reading, question quality, GBS effectiveness, building capability, presentation-need alignment, concern resolution, securing
 
-**Activity-effectiveness balance:** managers must track both dimensions -- high activity with poor skill wastes customer time; strong skills with low activity leaves revenue on the table
+**Balance:** high activity + poor skill = wasted customer time; strong skills + low activity = revenue left on table
 
 **Manager role shifts:**
 - Reactive -> Proactive (manage by facts, not opinions)
@@ -174,14 +147,14 @@ The matrix classifies each sales situation by two dimensions: customer **percept
 
 ## Key Principles
 
-1. **Customer perception drives everything.** The customer's perception of need and value determines quadrant position and which unit skills to apply. Perception is reality.
-2. **Joint definition, not one-sided prescription.** Discovery is collaborative -- problems must be converted to jointly confirmed needs before any solution is presented.
-3. **Ask, don't tell.** Building works through critical questions that let the customer discover impact themselves. Telling creates resistance; asking creates acceptance.
-4. **Flexibility over formula.** The "N" pattern is a guide, not a script. Follow the customer's lead and move between units as perception shifts.
-5. **Concerns are healthy.** Objections indicate engagement. Resolve non-adversarially using the 5-step framework (Understand, Confirm, Acknowledge, Answer, Check).
-6. **Praise before development.** In coaching, identify strengths first. Use the RSS model as a shared diagnostic language, not a scorecard.
-7. **Activity and skill together.** Neither volume nor technique alone drives results. The Sales MOS tracks both dimensions and coaches to both.
-8. **Continuous reinforcement.** Without ongoing coaching, 80% of training is lost. Every call review -- even a perfect call -- reinforces the RSS process until it becomes organisational habit.
+1. **Customer perception drives everything.** Perception of need and value determines quadrant position and which skills to apply.
+2. **Joint definition, not one-sided prescription.** Problems must be converted to jointly confirmed needs before presenting solutions.
+3. **Ask, don't tell.** Critical questions let the customer discover impact. Telling creates resistance; asking creates acceptance.
+4. **Flexibility over formula.** The "N" pattern is a guide. Follow the customer's lead as perception shifts.
+5. **Concerns are healthy.** Resolve non-adversarially (Understand, Confirm, Acknowledge, Answer, Check).
+6. **Praise before development.** Identify strengths first. Use the RSS model as shared diagnostic language, not a scorecard.
+7. **Activity and skill together.** Neither volume nor technique alone drives results. Track and coach both.
+8. **Continuous reinforcement.** Without coaching, 80% of training is lost. Every review reinforces the process.
 
 ---
 
