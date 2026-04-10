@@ -87,9 +87,7 @@ Applies to all PRs. Mandatory. No exceptions.
 Run the following command from the repo root before requesting review:
 
 ```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use"
+grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . | grep -v "miller-heiman-exclusion-register" | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear" # EXCLUDED terms — Exclusion check
 ```
 
 - [ ] The command returns **zero results**.

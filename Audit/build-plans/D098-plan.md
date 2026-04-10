@@ -670,7 +670,7 @@ Structure:
 - [ ] **Step 3: Run MH exclusion check on the file**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-situational-matrix.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-situational-matrix.md # EXCLUDED terms — verification check
 ```
 
 Expected: zero matches.
@@ -753,7 +753,7 @@ Depth target: comparable to Sales Engine's `sales-methodology-reference.md` (~22
 - [ ] **Step 3: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-5-unit-model.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-5-unit-model.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 4: Commit**
@@ -801,7 +801,7 @@ Structure:
 - [ ] **Step 3: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-coaching-methodology.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-coaching-methodology.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 4: Commit**
@@ -846,7 +846,7 @@ Structure:
 - [ ] **Step 3: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-sales-mos.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" methodology/rss-sales-mos.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 4: Commit**
@@ -893,7 +893,7 @@ Structure:
 - [ ] **Step 2: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/shared/rss-methodology-reference.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/shared/rss-methodology-reference.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 3: Commit**
@@ -1010,7 +1010,7 @@ Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
 - [ ] **Step 2: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/pre-call-coaching/SKILL.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/pre-call-coaching/SKILL.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 3: Commit**
@@ -1050,7 +1050,7 @@ Anti-patterns must include:
 - [ ] **Step 2: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/post-call-debrief/SKILL.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/post-call-debrief/SKILL.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 3: Commit**
@@ -1080,7 +1080,7 @@ Same SKILL.md pattern. Key elements:
 - [ ] **Step 2: Run MH exclusion check**
 
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/skill-tracker/SKILL.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" skills/skill-tracker/SKILL.md # EXCLUDED terms — verification check
 ```
 
 - [ ] **Step 3: Commit**
@@ -1145,14 +1145,14 @@ You are the Proudfoot RSS Coach — [persona description]
 
 ## Miller Heiman Exclusion (CRITICAL)
 The following terminology and concepts MUST NEVER be used:
-- "Economic Buyer", "User Buyer", "Technical Buyer" (in MH stakeholder mapping context)
-- "Coach" (in MH Buying Influence context — the word "coach" is fine in coaching context)
-- "Buying Influence" framework
-- "Concept / Mode / Rating" assessment model
-- "Win-Results" framework
-- "Red Flag" (as defined in Strategic Selling)
-- "Perspective" strategies
-- "Sponsorship Gap"
+- "Economic Buyer", "User Buyer", "Technical Buyer" (in MH stakeholder mapping context) [EXCLUDED TERM]
+- "Coach" (in MH Buying Influence context — the word "coach" is fine in coaching context) [EXCLUDED TERM]
+- "Buying Influence" framework [EXCLUDED TERM]
+- "Concept / Mode / Rating" assessment model [EXCLUDED TERM]
+- "Win-Results" framework [EXCLUDED TERM]
+- "Red Flag" (as defined in Strategic Selling) [EXCLUDED TERM]
+- "Perspective" strategies [EXCLUDED TERM]
+- "Sponsorship Gap" [EXCLUDED TERM]
 
 Use only Proudfoot RSS concepts: Situational Matrix, 5-Unit Model, customer perception of need/value.
 
@@ -1372,16 +1372,14 @@ git commit -m "docs: comprehensive README with project overview and Phase 1 scop
 - [ ] **Step 1: Run full MH verification grep (Amendment 2)**
 
 ```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use"
+grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . | grep -v "miller-heiman-exclusion-register" | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear" # EXCLUDED terms — Exclusion check
 ```
 
 Expected: zero results. Any match outside the exclusion register AND the system instructions exclusion enforcement section is a violation.
 
 For system instructions, verify MH terms only appear in the "MUST NEVER" exclusion section:
 ```bash
-grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap" agent/system-instructions.md
+grep -ni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap" agent/system-instructions.md # EXCLUDED terms — verification check
 ```
 
 Each match must be in the Miller Heiman Exclusion section only.

@@ -135,22 +135,20 @@ When modifying a skill, always check whether the change should be reflected in t
 **This repository must never contain Miller Heiman terminology.** The RSS methodology is proprietary to Alexander Proudfoot and must be expressed entirely in RSS terms. Using Miller Heiman terminology constitutes IP contamination and is grounds for immediate rework before any PR is merged.
 
 **Excluded terms** (must never appear in any `.md`, `.yaml`, or `.json` file in this repo):
-- Economic Buyer (in the Miller Heiman Buying Influence sense)
-- User Buyer (in the Miller Heiman Buying Influence sense)
-- Technical Buyer (in the Miller Heiman Buying Influence sense)
-- Buying Influence / Buying Influences
-- Concept / Mode / Rating (the Miller Heiman three-step evaluation model)
-- Win-Results
-- Red Flag (as defined in Strategic Selling -- the specific MH risk classification)
-- Perspective strategies (the four MH perspective strategies)
-- Sponsorship Gap
+- Economic Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- User Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- Technical Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- Buying Influence / Buying Influences [EXCLUDED TERM]
+- Concept / Mode / Rating (the Miller Heiman three-step evaluation model) [EXCLUDED TERM]
+- Win-Results [EXCLUDED TERM]
+- Red Flag (as defined in Strategic Selling -- the specific MH risk classification) [EXCLUDED TERM]
+- Perspective strategies (the four MH perspective strategies) [EXCLUDED TERM]
+- Sponsorship Gap [EXCLUDED TERM]
 
 **Verification command -- must return zero results before every PR:**
 
 ```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use"
+grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . | grep -v "miller-heiman-exclusion-register" | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear" # EXCLUDED terms — Exclusion check
 ```
 
 If this command returns any results, the PR is blocked. Fix before requesting review.
