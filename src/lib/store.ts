@@ -35,39 +35,59 @@ export const useStore = create<AppState>((set) => ({
   userLoading: true,
   loadUser: async () => {
     set({ userLoading: true })
-    const user = await getAuthUser()
-    set({ user, userLoading: false })
+    try {
+      const user = await getAuthUser()
+      set({ user })
+    } finally {
+      set({ userLoading: false })
+    }
   },
 
   sessions: [],
   sessionsLoading: false,
   loadSessions: async () => {
     set({ sessionsLoading: true })
-    const sessions = await apiFetch<CoachingSession[]>('/api/sessions')
-    set({ sessions, sessionsLoading: false })
+    try {
+      const sessions = await apiFetch<CoachingSession[]>('/api/sessions')
+      set({ sessions })
+    } finally {
+      set({ sessionsLoading: false })
+    }
   },
 
   profile: null,
   profileLoading: false,
   loadProfile: async () => {
     set({ profileLoading: true })
-    const profile = await apiFetch<SalespersonProfile | null>('/api/profile')
-    set({ profile, profileLoading: false })
+    try {
+      const profile = await apiFetch<SalespersonProfile | null>('/api/profile')
+      set({ profile })
+    } finally {
+      set({ profileLoading: false })
+    }
   },
 
   trends: [],
   trendsLoading: false,
   loadTrends: async () => {
     set({ trendsLoading: true })
-    const trends = await apiFetch<UnitTrend[]>('/api/profile/trends')
-    set({ trends, trendsLoading: false })
+    try {
+      const trends = await apiFetch<UnitTrend[]>('/api/profile/trends')
+      set({ trends })
+    } finally {
+      set({ trendsLoading: false })
+    }
   },
 
   matrixData: null,
   matrixLoading: false,
   loadMatrix: async () => {
     set({ matrixLoading: true })
-    const matrixData = await apiFetch<MatrixData>('/api/matrix/positions')
-    set({ matrixData, matrixLoading: false })
+    try {
+      const matrixData = await apiFetch<MatrixData>('/api/matrix/positions')
+      set({ matrixData })
+    } finally {
+      set({ matrixLoading: false })
+    }
   },
 }))

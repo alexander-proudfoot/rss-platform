@@ -1,7 +1,7 @@
 import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } from '@azure/functions'
 import { getClientPrincipal } from '../lib/auth.js'
 import { query } from '../lib/db.js'
-import { submitJob } from '../lib/jobs.js'
+import { submitJob, executeJob } from '../lib/jobs.js'
 import { createSession as createAgentSession, sendMessageToSession } from '../lib/managed-agent.js'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -36,40 +36,48 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
     req,
   )
 
-  // Submit async job to get agent response
+  // Submit job record and execute within invocation context.
+  // The work is awaited (not fire-and-forget) to prevent Azure Functions
+  // from recycling the process mid-execution.
   const messageContent = body.content
+  const work = async (_jobId: string) => {
+    let agentResponse
+    if (session.agent_session_id) {
+      agentResponse = await sendMessageToSession(session.agent_session_id, messageContent)
+    } else {
+      agentResponse = await createAgentSession(messageContent)
+      await query(
+        'UPDATE coaching_sessions SET agent_session_id = @agentSessionId WHERE id = @sessionId',
+        { agentSessionId: agentResponse.sessionId, sessionId },
+        req,
+      )
+    }
+
+    // Save assistant message
+    await query(
+      `INSERT INTO coaching_messages (id, session_id, role, content, created_at)
+       VALUES (@id, @sessionId, 'assistant', @content, GETUTCDATE())`,
+      { id: uuidv4(), sessionId, content: agentResponse.text },
+      req,
+    )
+
+    return JSON.stringify({ text: agentResponse.text })
+  }
+
   const jobId = await submitJob(
     session.salesperson_id,
     sessionId,
     'coaching_message',
-    async (_jobId: string) => {
-      let agentResponse
-      if (session.agent_session_id) {
-        agentResponse = await sendMessageToSession(session.agent_session_id, messageContent)
-      } else {
-        agentResponse = await createAgentSession(messageContent)
-        await query(
-          'UPDATE coaching_sessions SET agent_session_id = @agentSessionId WHERE id = @sessionId',
-          { agentSessionId: agentResponse.sessionId, sessionId },
-          req,
-        )
-      }
-
-      // Save assistant message
-      await query(
-        `INSERT INTO coaching_messages (id, session_id, role, content, created_at)
-         VALUES (@id, @sessionId, 'assistant', @content, GETUTCDATE())`,
-        { id: uuidv4(), sessionId, content: agentResponse.text },
-        req,
-      )
-
-      return JSON.stringify({ text: agentResponse.text })
-    },
+    work,
     { content: messageContent },
     req,
   )
 
-  return { status: 202, jsonBody: { jobId } }
+  // Execute the job within this invocation so the Functions runtime
+  // keeps the process alive until completion
+  await executeJob(jobId, work, req)
+
+  return { status: 200, jsonBody: { jobId } }
 }
 
 app.http('sendMessage', {

@@ -23,11 +23,12 @@ async function createSession(req: HttpRequest, _context: InvocationContext): Pro
   }
 
   // Ensure salesperson profile exists (upsert)
+  const displayName = principal.claims?.find(c => c.typ === 'name')?.val || principal.userDetails
   await query(
     `IF NOT EXISTS (SELECT 1 FROM salesperson_profiles WHERE user_oid = @userOid)
      INSERT INTO salesperson_profiles (id, user_oid, display_name, email)
      VALUES (@id, @userOid, @displayName, @email)`,
-    { id: uuidv4(), userOid: principal.userId, displayName: principal.userDetails, email: principal.userDetails },
+    { id: uuidv4(), userOid: principal.userId, displayName, email: principal.userDetails },
     req,
   )
 

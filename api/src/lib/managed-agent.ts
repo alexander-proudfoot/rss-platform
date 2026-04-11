@@ -110,22 +110,21 @@ export async function sendMessageToSession(
     throw new Error(`[parse_error] Unexpected session status: ${sessionStatus}`)
   }
 
-  // Extract text from agent.message events
+  // Extract text from the last agent.message event only (not all historical events)
   const allEvents = []
   for await (const event of anthropic.beta.sessions.events.list(sessionId)) {
     allEvents.push(event)
   }
 
+  const lastAgentMessage = [...allEvents].reverse().find(e => e.type === 'agent.message')
   const textParts: string[] = []
-  for (const event of allEvents) {
-    if (event.type === 'agent.message') {
-      for (const block of event.content) {
-        if (block.type === 'text') {
-          textParts.push(block.text)
-        }
+  if (lastAgentMessage && lastAgentMessage.type === 'agent.message') {
+    for (const block of lastAgentMessage.content) {
+      if (block.type === 'text') {
+        textParts.push(block.text)
       }
     }
   }
 
-  return { text: textParts.join('\n'), sessionId }
+  return { text: textParts.join(''), sessionId }
 }

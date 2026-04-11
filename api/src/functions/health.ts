@@ -43,7 +43,7 @@ async function healthHandler(_req: HttpRequest, _context: InvocationContext): Pr
   }
 
   const allOk = checks.database.status === 'ok' && checks.managedAgent.status === 'ok'
-  const anyError = checks.database.status === 'error' && checks.managedAgent.status === 'error'
+  const anyError = checks.database.status === 'error' || checks.managedAgent.status === 'error'
 
   const result: HealthStatus = {
     status: anyError ? 'unhealthy' : allOk ? 'healthy' : 'degraded',

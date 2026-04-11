@@ -5,6 +5,7 @@ export interface ClientPrincipal {
   userId: string       // AAD Object ID
   userDetails: string  // email
   userRoles: string[]
+  claims?: Array<{ typ: string; val: string }>
 }
 
 export function getClientPrincipal(req: HttpRequest): ClientPrincipal | null {
