@@ -38,7 +38,7 @@ This document describes the tools available to the RSS Coaching Agent.
 | Module | API Name | What Is Written |
 |--------|----------|----------------|
 | Meeting Notes | SF_Notes | Post-call debrief structured notes: RSS units applied, customer responses, Situational Matrix position update, next-step actions |
-| Deals | Deals | Deal stage updates when reported by salesperson; notes field for coaching context |
+| Deals | Deals | Coaching notes field only — the agent does not modify deal stages, values, or dates |
 
 ### Usage
 - After every post-call debrief: log structured notes to SF_Notes module

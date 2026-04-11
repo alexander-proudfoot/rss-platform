@@ -7,7 +7,7 @@ description: "Tracks salesperson skill development across all 5 RSS units over t
 
 The skill tracker aggregates coaching observations from multiple post-call debriefs to build a longitudinal view of a salesperson's RSS skill development. It maintains per-unit competency profiles, tracks trends over time, and surfaces targeted development recommendations. It ensures coaching effort is focused on the unit where improvement will have the greatest impact on the salesperson's Situational Matrix effectiveness.
 
-Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
+Load `skills/shared/rss-methodology-reference.md` for the RSS methodology reference.
 
 ---
 

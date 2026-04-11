@@ -135,7 +135,7 @@ Applies to all PRs that create or modify `agent/system-instructions.md`.
 Applies to all PRs that create or modify `skills/shared/rss-methodology-reference.md`.
 
 - [ ] The shared reference file is a **condensed** version of the methodology files — not a copy or near-copy. Its purpose is context window optimisation.
-- [ ] The file is **shorter** than the combined total length of the five methodology files in `methodology/`. If it is longer or equal in length, it is not functioning as a condensed reference.
+- [ ] The file is **shorter** than the combined total length of the four methodology files in `methodology/`. If it is longer or equal in length, it is not functioning as a condensed reference.
 - [ ] The file covers all **5 RSS units**: Positioning, Discovering, Building, Presenting, Resolving Concerns.
 - [ ] The file covers the **Situational Matrix**: both dimensions (customer perception of need, customer perception of value) and how they map to selling approach.
 

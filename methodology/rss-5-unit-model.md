@@ -542,16 +542,15 @@ The five RSS units map directly to movement on the Situational Matrix:
 ```
                     High Value
                         |
-         Resolving      |     SECURING
-         (remove        |     (commitment)
-          barriers)     |
+         [Q4: none]     |     SECURING
+                        |     (commitment)
                         |
   Low Needs -------- BUILDING -------- High Needs
                         |
          Positioning    |     Presenting
-         (establish     |     (educate on
-          purpose)      |      value)
-                        |
+         (establish     |     (educate on value)
+          purpose)      |     Resolving
+                        |     (remove barriers)
                     Low Value
 ```
 

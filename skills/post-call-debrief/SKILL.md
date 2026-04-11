@@ -7,7 +7,7 @@ description: "Conducts a structured post-call debrief after any customer interac
 
 The post-call debrief skill structures the analysis of a completed customer interaction using the RSS Relationship Selling Skills methodology. It uses a structured questioning approach to surface what actually happened (not what the salesperson hoped happened), maps the interaction against the RSS 5-Unit Model, reassesses the customer's Situational Matrix position based on observed evidence, and generates development insights and next-step actions.
 
-Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
+Load `skills/shared/rss-methodology-reference.md` for the RSS methodology reference.
 
 ---
 

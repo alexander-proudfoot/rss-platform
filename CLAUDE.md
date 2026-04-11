@@ -100,7 +100,7 @@ Simple read-only operations (listing files, checking status, reading config) do 
 
 ## RSS Methodology
 
-The RSS (Revenue-Selling System) methodology is the domain knowledge that powers the agent's coaching capability.
+The RSS (Relationship Selling Skills) methodology is the domain knowledge that powers the agent's coaching capability.
 
 Four methodology files live in `methodology/`:
 

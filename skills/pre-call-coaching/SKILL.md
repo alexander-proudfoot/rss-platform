@@ -7,7 +7,7 @@ description: "Coaches pre-call preparation for any customer meeting. Pulls oppor
 
 The pre-call coaching skill prepares a salesperson for an upcoming customer meeting using the RSS Relationship Selling Skills methodology. It grounds every coaching brief in the customer's current Situational Matrix position and selects specific RSS units and techniques for the session. It integrates Zoho CRM data for context and personalises coaching based on the salesperson's skill development history.
 
-Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
+Load `skills/shared/rss-methodology-reference.md` for the RSS methodology reference.
 
 ---
 
