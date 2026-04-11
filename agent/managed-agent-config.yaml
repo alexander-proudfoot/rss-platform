@@ -1,0 +1,54 @@
+# RSS Platform — Managed Agent Configuration
+# Deploy via Claude Managed Agents API (launched April 8, 2026)
+# Version: 1.0
+# Date: 2026-04-10
+# Note: Configuration structure based on Managed Agents API at launch.
+#       Verify against latest API documentation before deployment.
+
+agent:
+  name: "proudfoot-rss-coach"
+  display_name: "Proudfoot RSS Coach"
+  description: "AI sales coaching agent encoding Proudfoot's Relationship Selling Skills (RSS) methodology. Provides pre-call coaching, post-call debriefs, and skill development tracking."
+
+  model:
+    default: "claude-sonnet-4-6"
+    deep_analysis: "claude-opus-4-6"
+
+  system_instructions:
+    path: "./system-instructions.md"
+
+  skills:
+    - name: "pre-call-coaching"
+      path: "../skills/pre-call-coaching/SKILL.md"
+      trigger: "pre-call, before meeting, call preparation"
+
+    - name: "post-call-debrief"
+      path: "../skills/post-call-debrief/SKILL.md"
+      trigger: "debrief, after call, post-meeting, what happened"
+
+    - name: "skill-tracker"
+      path: "../skills/skill-tracker/SKILL.md"
+      trigger: "development review, skill progress, how am I doing, trend"
+
+  shared_references:
+    - name: "rss-methodology-reference"
+      path: "../skills/shared/rss-methodology-reference.md"
+      load: "always"
+
+  tools:
+    - name: "zoho-crm"
+      type: "mcp"
+      description: "Zoho CRM MCP connector for opportunity and contact data"
+      config_ref: "D068"
+
+  session:
+    persistence: true
+    scope: "per_salesperson"
+    context_includes:
+      - development_profiles
+      - matrix_position_history
+      - coaching_history
+
+  phase: "1 (internal proof of concept)"
+  access: "Proudfoot internal sales team only"
+  deployment_date: "2026-04-10 (target)"

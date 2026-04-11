@@ -1,0 +1,23 @@
+# Environment and secrets — never commit
+.env
+.env.*
+*.env
+
+# Node
+node_modules/
+dist/
+build/
+
+# Logs (except Audit/ which is committed intentionally)
+*.log
+!Audit/**/*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

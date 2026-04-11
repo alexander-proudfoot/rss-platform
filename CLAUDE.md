@@ -100,13 +100,12 @@ Simple read-only operations (listing files, checking status, reading config) do 
 
 ## RSS Methodology
 
-The RSS (Revenue-Selling System) methodology is the domain knowledge that powers the agent's coaching capability.
+The RSS (Relationship Selling Skills) methodology is the domain knowledge that powers the agent's coaching capability.
 
-Five methodology files live in `methodology/`:
+Four methodology files live in `methodology/`:
 
 | File | Purpose |
 |------|---------|
-| `methodology/rss-core-principles.md` | Foundational RSS sales philosophy and core principles |
 | `methodology/rss-situational-matrix.md` | Situational selling matrix: opportunity classification and response mapping |
 | `methodology/rss-5-unit-model.md` | The 5-Unit Model: the RSS framework for structuring customer conversations |
 | `methodology/rss-coaching-methodology.md` | Coaching framework: observation, feedback, and skill development protocols |
@@ -135,27 +134,27 @@ When modifying a skill, always check whether the change should be reflected in t
 **This repository must never contain Miller Heiman terminology.** The RSS methodology is proprietary to Alexander Proudfoot and must be expressed entirely in RSS terms. Using Miller Heiman terminology constitutes IP contamination and is grounds for immediate rework before any PR is merged.
 
 **Excluded terms** (must never appear in any `.md`, `.yaml`, or `.json` file in this repo):
-- Economic Buyer (in the Miller Heiman Buying Influence sense)
-- User Buyer (in the Miller Heiman Buying Influence sense)
-- Technical Buyer (in the Miller Heiman Buying Influence sense)
-- Buying Influence / Buying Influences
-- Concept / Mode / Rating (the Miller Heiman three-step evaluation model)
-- Win-Results
-- Red Flag (as defined in Strategic Selling -- the specific MH risk classification)
-- Perspective strategies (the four MH perspective strategies)
-- Sponsorship Gap
+- Economic Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- User Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- Technical Buyer (in the Miller Heiman Buying Influence sense) [EXCLUDED TERM]
+- Buying Influence / Buying Influences [EXCLUDED TERM]
+- Concept / Mode / Rating (the Miller Heiman three-step evaluation model) [EXCLUDED TERM]
+- Win-Results [EXCLUDED TERM]
+- Red Flag (as defined in Strategic Selling -- the specific MH risk classification) [EXCLUDED TERM]
+- Perspective strategies (the four MH perspective strategies) [EXCLUDED TERM]
+- Sponsorship Gap [EXCLUDED TERM]
+- Even Keel (Miller Heiman Mode assessment) [EXCLUDED TERM]
+- Overconfident (Miller Heiman Mode assessment) [EXCLUDED TERM]
 
 **Verification command -- must return zero results before every PR:**
 
 ```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use"
+grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg\|even keel\|overconfident" --include="*.md" --include="*.yaml" --include="*.json" . | grep -v "miller-heiman-exclusion-register" | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear" # EXCLUDED terms — Exclusion check
 ```
 
 If this command returns any results, the PR is blocked. Fix before requesting review.
 
-The authoritative register of excluded terms and their RSS equivalents is at `docs/miller-heiman-exclusion-register.md`.
+The authoritative register of excluded terms and their RSS equivalents is at `methodology/miller-heiman-exclusion-register.md`.
 
 ## Zoho CRM Integration
 

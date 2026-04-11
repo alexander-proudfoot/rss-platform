@@ -87,13 +87,11 @@ Applies to all PRs. Mandatory. No exceptions.
 Run the following command from the repo root before requesting review:
 
 ```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg" --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use"
+grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg\|even keel\|overconfident" --include="*.md" --include="*.yaml" --include="*.json" . | grep -v "miller-heiman-exclusion-register" | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear" # EXCLUDED terms — Exclusion check
 ```
 
 - [ ] The command returns **zero results**.
-- [ ] If any result is returned: the PR is blocked. Rework the content to use RSS terminology before requesting review. Consult `docs/miller-heiman-exclusion-register.md` for approved RSS equivalents.
+- [ ] If any result is returned: the PR is blocked. Rework the content to use RSS terminology before requesting review. Consult `methodology/miller-heiman-exclusion-register.md` for approved RSS equivalents.
 
 **BLOCKED if:** The grep command returns any results.
 
@@ -120,7 +118,7 @@ Applies to all PRs that create or modify any file in `methodology/`.
 Applies to all PRs that create or modify `agent/system-instructions.md`.
 
 - [ ] **IP protection rules** are present. The system instructions must explicitly prohibit the agent from generating Miller Heiman terminology.
-- [ ] **Miller Heiman exclusion enforcement section** is present. It must list the "MUST NEVER" terms consistent with `docs/miller-heiman-exclusion-register.md` and CLAUDE.md.
+- [ ] **Miller Heiman exclusion enforcement section** is present. It must list the "MUST NEVER" terms consistent with `methodology/miller-heiman-exclusion-register.md` and CLAUDE.md.
 - [ ] **RSS coaching persona** is defined. The persona must establish the agent's role, tone, and coaching philosophy grounded in RSS methodology.
 - [ ] **Skills table** is present and correctly references all 3 SKILL.md files:
   - `skills/pre-call-coaching/SKILL.md`
@@ -137,7 +135,7 @@ Applies to all PRs that create or modify `agent/system-instructions.md`.
 Applies to all PRs that create or modify `skills/shared/rss-methodology-reference.md`.
 
 - [ ] The shared reference file is a **condensed** version of the methodology files — not a copy or near-copy. Its purpose is context window optimisation.
-- [ ] The file is **shorter** than the combined total length of the five methodology files in `methodology/`. If it is longer or equal in length, it is not functioning as a condensed reference.
+- [ ] The file is **shorter** than the combined total length of the four methodology files in `methodology/`. If it is longer or equal in length, it is not functioning as a condensed reference.
 - [ ] The file covers all **5 RSS units**: Positioning, Discovering, Building, Presenting, Resolving Concerns.
 - [ ] The file covers the **Situational Matrix**: both dimensions (customer perception of need, customer perception of value) and how they map to selling approach.
 
