@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "composite": true,
+    "outDir": "../dist/api-types",
+    "declarationDir": "../dist/api-types",
+    "tsBuildInfoFile": "../dist/api-types/.tsbuildinfo",
+    "skipLibCheck": true
+  },
+  "include": ["./**/*.ts"]
+}
