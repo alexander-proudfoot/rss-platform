@@ -10,6 +10,7 @@ build/
 
 # Logs (except Audit/ which is committed intentionally)
 *.log
+!Audit/**/*.log
 npm-debug.log*
 
 # OS

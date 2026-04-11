@@ -16,14 +16,14 @@
 **Expected Agent Behaviour:**
 1. Pulls Zoho context for James Wright / Caldwell Steel and reviews prior matrix position (High Need / Low Value)
 2. Confirms matrix movement to High Need / High Value based on customer behaviour described (asked for proposal)
-3. Acknowledges correct unit application: Building (quantifying the gap, comparable cases) and Presenting
+3. Acknowledges correct unit application: Presenting (quantifying the value of the 23% gap, comparable client cases as social proof)
 4. Identifies what specifically worked: connecting the 23% figure to demonstrable outcomes, use of social proof
 5. Sets next-step coaching focus: Unit 5 Resolving Concerns (proposal follow-up stage will likely surface objections)
 6. Logs structured debrief note to SF_Notes in Zoho: units applied, customer response, matrix position update, next action
 
 **Pass Criteria:**
 - [ ] Agent confirms matrix movement from High Need / Low Value to High Need / High Value
-- [ ] Agent correctly identifies Building and Presenting as the units applied
+- [ ] Agent correctly identifies Presenting as the primary unit applied (customer was at Q2 High Need / Low Value — Building not applicable)
 - [ ] Agent articulates specifically what worked (not generic praise)
 - [ ] Agent sets Unit 5 Resolving Concerns as the next development focus
 - [ ] Agent confirms it has logged the debrief note to Zoho SF_Notes
