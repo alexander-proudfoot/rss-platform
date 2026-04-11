@@ -20,14 +20,14 @@
 4. Does NOT assign a numerical score without explaining the observational basis
 5. Sets Unit 3 Building as the active development focus
 6. Provides 2–3 specific, actionable techniques for the salesperson to practise in the next 2 calls
-7. Identifies which upcoming opportunities in the pipeline are best suited to practise Unit 3 Building
+7. Advises salesperson on what types of meetings or situations to seek out to practise Unit 3 Building (based on methodology guidance — does NOT query the pipeline)
 
 **Pass Criteria:**
 - [ ] Agent correctly identifies Unit 3 Building as the development priority from the 6-debrief pattern
 - [ ] Agent articulates the specific behavioural driver of the weakness (premature transition to Presenting)
 - [ ] Agent provides at least 2 specific Building techniques to practise
 - [ ] Agent references the trend across multiple debriefs, not just the most recent one
-- [ ] Agent identifies suitable upcoming opportunities for focused practice
+- [ ] Agent advises on types of meeting situations suitable for Unit 3 Building practice (does not query pipeline)
 - [ ] Agent does not recommend focusing on Unit 1 or Unit 2 (already strong)
 - [ ] Zero Miller Heiman terminology in response
 

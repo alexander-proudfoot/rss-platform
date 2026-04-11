@@ -49,6 +49,7 @@ graph TB
 
     SP -->|"API request"| SI
     PCC -->|"Read: opportunity, contact, meetings"| ZOHO
+    PCD -->|"Read: prior matrix position, coaching notes"| ZOHO
     PCD -->|"Write: coaching observations"| ZOHO
     ST -->|"Read/write: development profiles"| SESSION
 ```
@@ -77,7 +78,7 @@ Each capability is encoded as a SKILL.md file following the Sales Engine pattern
 
 The agent connects to Zoho CRM via the MCP connector (D068):
 
-**Read operations (pre-call):**
+**Read operations (pre-call and post-call debrief):**
 - Accounts module: company context, account classification
 - Contacts module: contact relationship and history
 - Deals module: opportunity stage and value

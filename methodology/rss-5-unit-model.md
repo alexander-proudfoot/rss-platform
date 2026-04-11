@@ -7,7 +7,7 @@
 
 ## Overview
 
-Relationship Selling Skills (RSS) is a structured sales methodology built around five sequential units that guide a salesperson through a complete sales interaction: **Positioning, Discovering, Building, Presenting,** and **Resolving Concerns**. A sixth unit, **Securing**, addresses commitment but is outside the scope of the 5-Unit coaching model. [NEEDS DAVID WARREN REVIEW: Confirm whether Securing is excluded from the coaching platform or should be included as Unit 6.]
+Relationship Selling Skills (RSS) is a structured sales methodology built around five sequential units that guide a salesperson through a complete sales interaction: **Positioning, Discovering, Building, Presenting,** and **Resolving Concerns**. A sixth unit, **Securing**, addresses commitment and closes the loop for High Need / High Value (Q1) customers — while not formally named as one of the five units, the agent coaching platform includes Securing guidance for Q1 customers. [NEEDS DAVID WARREN REVIEW: Confirm the correct framing of Securing in the 5-Unit coaching model — formally Unit 6, or handled as a natural outcome of Resolving Concerns?]
 
 The five units follow the path of the **Situational Matrix** -- a flexible road map based on the customer's perception of needs and value. The progression logic is:
 
