@@ -13,9 +13,9 @@ const VALID_FOCUS_UNITS = [
 interface ProfileRow extends Record<string, unknown> {
   id: string
   user_oid: string
-  display_name: string | null
-  email: string | null
-  focus_unit: string | null
+  display_name: string
+  email: string
+  current_focus_unit: string | null
   created_at: string
   updated_at: string
 }
@@ -25,7 +25,7 @@ async function getProfile(req: HttpRequest, _context: InvocationContext): Promis
   if (!principal) return { status: 401 }
 
   const result = await query<ProfileRow>(
-    'SELECT id, user_oid, display_name, email, focus_unit, created_at, updated_at FROM salesperson_profiles WHERE user_oid = @userOid',
+    'SELECT id, user_oid, display_name, email, current_focus_unit, created_at, updated_at FROM salesperson_profiles WHERE user_oid = @userOid',
     { userOid: principal.userId },
     req,
   )
@@ -39,12 +39,10 @@ async function getProfile(req: HttpRequest, _context: InvocationContext): Promis
     status: 200,
     jsonBody: {
       id: row.id,
-      userOid: row.user_oid,
-      displayName: row.display_name,
+      display_name: row.display_name,
       email: row.email,
-      focusUnit: row.focus_unit,
-      createdAt: row.created_at,
-      updatedAt: row.updated_at,
+      current_focus_unit: row.current_focus_unit,
+      created_at: row.created_at,
     },
   }
 }
@@ -72,7 +70,7 @@ async function updateFocusUnit(req: HttpRequest, _context: InvocationContext): P
   if (profileResult.recordset.length === 0) return { status: 404 }
 
   await query(
-    'UPDATE salesperson_profiles SET focus_unit = @focusUnit, updated_at = GETUTCDATE() WHERE user_oid = @userOid',
+    'UPDATE salesperson_profiles SET current_focus_unit = @focusUnit, updated_at = GETUTCDATE() WHERE user_oid = @userOid',
     { focusUnit, userOid: principal.userId },
     req,
   )

@@ -13,7 +13,7 @@ const ALL_UNITS = [
 type TrendClassification = 'insufficient_data' | 'improving' | 'declining' | 'plateauing'
 
 interface ObservationScoreRow extends Record<string, unknown> {
-  rss_unit: string
+  unit_assessed: string
   score: number
   observation_date: string
 }
@@ -32,60 +32,37 @@ async function getTrends(req: HttpRequest, _context: InvocationContext): Promise
   const principal = getClientPrincipal(req)
   if (!principal) return { status: 401 }
 
-  const profileResult = await query<{ id: string } & Record<string, unknown>>(
-    'SELECT id FROM salesperson_profiles WHERE user_oid = @userOid',
+  const result = await query<ObservationScoreRow>(
+    `SELECT ol.unit_assessed, ol.score, ol.observation_date
+     FROM observation_log ol
+     JOIN salesperson_profiles sp ON ol.salesperson_id = sp.id
+     WHERE sp.user_oid = @userOid
+     ORDER BY ol.observation_date ASC`,
     { userOid: principal.userId },
     req,
   )
 
-  if (profileResult.recordset.length === 0) {
-    return {
-      status: 200,
-      jsonBody: ALL_UNITS.map(unit => ({
-        unit,
-        currentScore: null,
-        averageScore: null,
-        observationCount: 0,
-        trend: 'insufficient_data' as TrendClassification,
-        scoreHistory: [],
-      })),
-    }
-  }
-
-  const salespersonId = profileResult.recordset[0].id
-
-  const result = await query<ObservationScoreRow>(
-    `SELECT rss_unit, score, observation_date
-     FROM skill_observations
-     WHERE salesperson_id = @salespersonId AND score IS NOT NULL
-     ORDER BY observation_date ASC`,
-    { salespersonId },
-    req,
-  )
-
-  const byUnit = new Map<string, { score: number; observation_date: string }[]>()
+  const byUnit = new Map<string, { score: number; date: string }[]>()
   for (const unit of ALL_UNITS) byUnit.set(unit, [])
 
   for (const row of result.recordset) {
-    const list = byUnit.get(row.rss_unit)
-    if (list) list.push({ score: row.score, observation_date: row.observation_date })
+    const list = byUnit.get(row.unit_assessed)
+    if (list) list.push({ score: row.score, date: row.observation_date })
   }
 
   const trends = ALL_UNITS.map(unit => {
-    const observations = byUnit.get(unit) ?? []
-    const scores = observations.map(o => o.score)
-
-    const currentScore = scores.length > 0 ? scores[scores.length - 1] : null
-    const averageScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : null
-    const trend = classifyTrend(scores)
+    const entries = byUnit.get(unit) ?? []
+    const scores = entries.map(e => e.score)
 
     return {
       unit,
-      currentScore,
-      averageScore: averageScore !== null ? Math.round(averageScore * 100) / 100 : null,
+      currentScore: scores.length > 0 ? scores[scores.length - 1] : null,
+      averageScore: scores.length > 0
+        ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10) / 10
+        : 0,
       observationCount: scores.length,
-      trend,
-      scoreHistory: observations.map(o => ({ score: o.score, observationDate: o.observation_date })),
+      trend: classifyTrend(scores),
+      scores: entries,
     }
   })
 
