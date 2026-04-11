@@ -39,15 +39,15 @@ Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
 
 ## Inputs to Gather
 
-| Input | Required For |
-|-------|-------------|
-| Account name and deal reference | Pulling opportunity context from Zoho CRM (account, contact, deal stage) |
-| Contact name and role | Tailoring the Positioning approach and identifying relevant challenges for the contact's function |
-| Meeting objective (what the salesperson hopes to achieve) | Aligning RSS unit selection and defining the Action Commitment to request |
-| Current Situational Matrix position (if known) | Selecting primary and supporting RSS units; if unknown, default to Discovering |
-| Prior meeting history and coaching observations | Identifying skill gaps to address and building on previous coaching feedback |
-| Customer industry and known challenges | Contextualising the GBS, questioning strategy, and value proposition emphasis |
-| Meeting type (first meeting, follow-up, presentation, negotiation) | Adjusting unit emphasis and the balance between Positioning, Discovering, and Presenting |
+| Input | Required For | Required? |
+|-------|-------------|-----------|
+| Account name and deal reference | Pulling opportunity context from Zoho CRM (account, contact, deal stage) | Yes |
+| Contact name and role | Tailoring the Positioning approach and identifying relevant challenges for the contact's function | Yes |
+| Meeting objective (what the salesperson hopes to achieve) | Aligning RSS unit selection and defining the Action Commitment to request | Yes |
+| Current Situational Matrix position (if known) | Selecting primary and supporting RSS units; if unknown, default to Discovering | No |
+| Prior meeting history and coaching observations | Identifying skill gaps to address and building on previous coaching feedback | No |
+| Customer industry and known challenges | Contextualising the GBS, questioning strategy, and value proposition emphasis | No |
+| Meeting type (first meeting, follow-up, presentation, negotiation) | Adjusting unit emphasis and the balance between Positioning, Discovering, and Presenting | No |
 
 ---
 

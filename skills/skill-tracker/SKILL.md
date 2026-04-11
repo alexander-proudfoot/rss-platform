@@ -94,13 +94,13 @@ A record of previous coaching conversations related to skill development:
 
 ## Inputs to Gather
 
-| Input | Required For |
-|-------|-------------|
-| Salesperson identifier | Retrieving the correct development profile and observation log |
-| Post-call debrief observations | The raw observation data -- unit assessed, score, specific behaviour noted, date, and meeting type |
-| Current development focus unit (if already set) | Determining whether to continue the existing focus or reassess based on new data |
-| Time period for analysis | Defining the window of observations to include in trend calculation (default: all available, with recency weighting) |
-| Coaching history | Prior coaching conversations, recommendations given, and outcomes observed |
+| Input | Required For | Required? |
+|-------|-------------|-----------|
+| Salesperson identifier | Retrieving the correct development profile and observation log | Yes |
+| Post-call debrief observations | The raw observation data -- unit assessed, score, specific behaviour noted, date, and meeting type | Yes |
+| Current development focus unit (if already set) | Determining whether to continue the existing focus or reassess based on new data | No |
+| Time period for analysis | Defining the window of observations to include in trend calculation (default: all available, with recency weighting) | No |
+| Coaching history | Prior coaching conversations, recommendations given, and outcomes observed | No |
 
 ---
 

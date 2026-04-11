@@ -91,7 +91,7 @@ grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-re
 ```
 
 - [ ] The command returns **zero results**.
-- [ ] If any result is returned: the PR is blocked. Rework the content to use RSS terminology before requesting review. Consult `docs/miller-heiman-exclusion-register.md` for approved RSS equivalents.
+- [ ] If any result is returned: the PR is blocked. Rework the content to use RSS terminology before requesting review. Consult `methodology/miller-heiman-exclusion-register.md` for approved RSS equivalents.
 
 **BLOCKED if:** The grep command returns any results.
 
@@ -118,7 +118,7 @@ Applies to all PRs that create or modify any file in `methodology/`.
 Applies to all PRs that create or modify `agent/system-instructions.md`.
 
 - [ ] **IP protection rules** are present. The system instructions must explicitly prohibit the agent from generating Miller Heiman terminology.
-- [ ] **Miller Heiman exclusion enforcement section** is present. It must list the "MUST NEVER" terms consistent with `docs/miller-heiman-exclusion-register.md` and CLAUDE.md.
+- [ ] **Miller Heiman exclusion enforcement section** is present. It must list the "MUST NEVER" terms consistent with `methodology/miller-heiman-exclusion-register.md` and CLAUDE.md.
 - [ ] **RSS coaching persona** is defined. The persona must establish the agent's role, tone, and coaching philosophy grounded in RSS methodology.
 - [ ] **Skills table** is present and correctly references all 3 SKILL.md files:
   - `skills/pre-call-coaching/SKILL.md`

@@ -38,16 +38,16 @@ Load `shared/rss-methodology-reference.md` for the RSS methodology reference.
 
 ## Inputs to Gather
 
-| Input | Required For |
-|-------|-------------|
-| Account name and deal reference | Linking the debrief to the correct opportunity in Zoho CRM and retrieving prior matrix position |
-| Contact name and role | Contextualising the customer's responses and assessing whether the right person was engaged |
-| Meeting type (first meeting, follow-up, presentation, discovery walkthrough) | Determining which RSS units were in scope for this interaction |
-| Customer's prior Situational Matrix position | Required baseline for assessing whether the customer's perception of need or value has shifted |
-| Salesperson's account of the meeting | What was said, what the customer did and said, what the salesperson attempted -- the raw material for debrief analysis |
-| Pre-call coaching brief (if issued) | Assessing adherence to the planned approach and whether the coaching recommendations were applied |
-| Salesperson's current skill development focus | Determining which skill dimensions to probe most deeply during the debrief |
-| Deal stage | Affecting how to weight matrix movement in next-step recommendations |
+| Input | Required For | Required? |
+|-------|-------------|-----------|
+| Account name and deal reference | Linking the debrief to the correct opportunity in Zoho CRM and retrieving prior matrix position | Yes |
+| Contact name and role | Contextualising the customer's responses and assessing whether the right person was engaged | Yes |
+| Meeting type (first meeting, follow-up, presentation, discovery walkthrough) | Determining which RSS units were in scope for this interaction | Yes |
+| Customer's prior Situational Matrix position | Required baseline for assessing whether the customer's perception of need or value has shifted | Yes |
+| Salesperson's account of the meeting | What was said, what the customer did and said, what the salesperson attempted -- the raw material for debrief analysis | Yes |
+| Pre-call coaching brief (if issued) | Assessing adherence to the planned approach and whether the coaching recommendations were applied | No |
+| Salesperson's current skill development focus | Determining which skill dimensions to probe most deeply during the debrief | No |
+| Deal stage | Affecting how to weight matrix movement in next-step recommendations | No |
 
 ---
 

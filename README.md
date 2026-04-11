@@ -39,8 +39,7 @@ rss-platform/
 ├── README.md                          # This file
 ├── .claude/settings.json              # 14-plugin standard set
 ├── .github/workflows/
-│   ├── auto-add-to-project.yml        # Auto-add issues to Product Board
-│   └── claude.yml                     # Claude Code Review on PRs
+│   └── auto-add-to-project.yml        # Auto-add issues to Product Board
 ├── methodology/                       # RSS methodology source files
 │   ├── rss-situational-matrix.md      # Foundational matrix framework
 │   ├── rss-5-unit-model.md            # All 5 RSS units with techniques

@@ -102,11 +102,10 @@ Simple read-only operations (listing files, checking status, reading config) do 
 
 The RSS (Revenue-Selling System) methodology is the domain knowledge that powers the agent's coaching capability.
 
-Five methodology files live in `methodology/`:
+Four methodology files live in `methodology/`:
 
 | File | Purpose |
 |------|---------|
-| `methodology/rss-core-principles.md` | Foundational RSS sales philosophy and core principles |
 | `methodology/rss-situational-matrix.md` | Situational selling matrix: opportunity classification and response mapping |
 | `methodology/rss-5-unit-model.md` | The 5-Unit Model: the RSS framework for structuring customer conversations |
 | `methodology/rss-coaching-methodology.md` | Coaching framework: observation, feedback, and skill development protocols |
@@ -153,7 +152,7 @@ grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-re
 
 If this command returns any results, the PR is blocked. Fix before requesting review.
 
-The authoritative register of excluded terms and their RSS equivalents is at `docs/miller-heiman-exclusion-register.md`.
+The authoritative register of excluded terms and their RSS equivalents is at `methodology/miller-heiman-exclusion-register.md`.
 
 ## Zoho CRM Integration
 
