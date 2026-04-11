@@ -8,7 +8,7 @@
 
 ## Scenario 1: Successful Call — Customer Moved on Matrix
 
-**Context:** Salesperson has just completed a Building and Presenting session with an existing customer. The customer was previously at High Need / Low Value. By the end of the call, the customer expressed strong interest in proceeding and asked about next steps — indicating a shift to High Need / High Value.
+**Context:** Salesperson has just completed a Presenting session with an existing customer. The customer was previously at High Need / Low Value. By the end of the call, the customer expressed strong interest in proceeding and asked about next steps — indicating a shift to High Need / High Value.
 
 **Agent Input:**
 "Just finished a call with James Wright at Caldwell Steel. Before the meeting he understood the problem but wasn't sold on us as the solution. I used the productivity gap data we'd quantified — the 23% figure — and walked him through two comparable client cases. By the end he asked me to send a proposal. I think he's moved. How did I do?"
@@ -25,7 +25,7 @@
 - [ ] Agent confirms matrix movement from High Need / Low Value to High Need / High Value
 - [ ] Agent correctly identifies Presenting as the primary unit applied (customer was at Q2 High Need / Low Value — Building not applicable)
 - [ ] Agent articulates specifically what worked (not generic praise)
-- [ ] Agent sets Unit 5 Resolving Concerns as the next development focus
+- [ ] Agent recommends Unit 5 Resolving Concerns as the next-step coaching action (proposal follow-up stage will surface objections)
 - [ ] Agent confirms it has logged the debrief note to Zoho SF_Notes
 - [ ] Zero Miller Heiman terminology in response
 

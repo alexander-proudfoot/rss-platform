@@ -547,10 +547,11 @@ The five RSS units map directly to movement on the Situational Matrix:
          (latent need)  |
   Low Needs -------- BUILDING -------- High Needs
                         |
-         Positioning    |     Presenting
-         (establish     |     (educate on value)
-          purpose)      |     Resolving
-                        |     (remove barriers)
+         Positioning/   |     Presenting
+         Discovering    |     (educate on value)
+         (establish     |     Resolving
+          purpose;      |     (remove barriers)
+          define needs) |
                     Low Value
 ```
 
