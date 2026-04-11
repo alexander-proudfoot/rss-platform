@@ -1,0 +1,20 @@
+{
+  "name": "rss-platform-api",
+  "private": true,
+  "main": "dist/src/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "func start --typescript"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.87.0",
+    "@azure/functions": "^4.6.0",
+    "mssql": "^11.0.0",
+    "uuid": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/mssql": "^9.1.0",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.7.0"
+  }
+}
