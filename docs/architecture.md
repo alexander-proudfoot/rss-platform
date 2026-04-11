@@ -85,7 +85,7 @@ The agent connects to Zoho CRM via the MCP connector (D068):
 
 **Write operations (post-debrief):**
 - SF_Notes module: structured coaching notes (RSS units applied, customer responses, matrix position, next actions)
-- Deals module: stage updates and contextual notes
+- Deals module: contextual coaching notes only (the agent does not modify deal stages, values, or dates)
 
 ---
 

@@ -41,17 +41,18 @@
 **Expected Agent Behaviour:**
 1. Pulls Zoho context for James Wright / Caldwell Steel
 2. Assesses matrix position as High Need / Low Value (explicitly stated in input)
-3. Identifies Unit 3 Building and Unit 4 Presenting as primary units for this position
-4. Recommends specific Building techniques (critical questioning, projecting, quantifying the 23% gap)
-5. Advises on Presenting approach: solution framing connected to the specific operational challenges surfaced in discovery
-6. Does NOT recommend starting with more discovery (need is already established)
+3. Identifies Unit 4 Presenting and Unit 5 Resolving as primary units for this position
+4. Advises on Presenting approach: solution framing connected to the specific operational challenges surfaced in discovery, quantifying the value of the 23% productivity improvement
+5. Identifies likely concerns (why Proudfoot over alternatives, implementation risk, ROI evidence) and prepares Resolving approach for each
+6. Does NOT recommend Building (need is already established — customer sees the problem clearly)
 
 **Pass Criteria:**
 - [ ] Agent correctly identifies High Need / Low Value matrix position
-- [ ] Agent recommends Building (Unit 3) and Presenting (Unit 4) as primary
+- [ ] Agent recommends Presenting (Unit 4) and Resolving (Unit 5) as primary
+- [ ] Agent does NOT recommend Building (need is already established)
 - [ ] Agent does NOT recommend further Discovering (need is established)
-- [ ] Agent provides specific Building techniques tied to the 23% productivity gap
-- [ ] Agent's presenting advice references the customer's specific situation, not generic features
+- [ ] Agent's presenting advice quantifies value in terms of the customer's specific 23% productivity gap
+- [ ] Agent surfaces likely concerns (Proudfoot differentiation, ROI, implementation) and prepares a Resolving approach
 
 ---
 
