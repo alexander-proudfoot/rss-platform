@@ -70,14 +70,14 @@
 3. Assesses initial Situational Matrix position: Low Need / Low Value → moving toward High Need based on the problems surfaced
 4. Notes that the prospect's question ("how have others tackled this?") is a positive engagement signal — but does not yet confirm High Value
 5. Recommends next meeting focus: Unit 3 Building — deepen urgency around the inventory and fulfilment problems, introduce comparable client outcomes
-6. Logs the new contact and initial discovery notes to Zoho: creates Contact and Account records, logs SF_Notes with the problems surfaced and the initial matrix assessment
+6. Logs initial discovery notes to Zoho SF_Notes with the problems surfaced and the initial matrix assessment; advises salesperson to create Contact and Account records in Zoho manually (agent write access is limited to SF_Notes and Deals — not Contacts or Accounts)
 
 **Pass Criteria:**
 - [ ] Agent correctly identifies Unit 2 Discovering as the primary unit applied
 - [ ] Agent assesses discovery quality (specific problems surfaced, engagement signals)
 - [ ] Agent establishes initial matrix position assessment (not just "unknown")
 - [ ] Agent recommends Unit 3 Building as the next session focus
-- [ ] Agent confirms Zoho CRM records created/updated for the new prospect
+- [ ] Agent logs SF_Notes to Zoho and advises salesperson to create Contact/Account records manually (agent cannot write to Contacts or Accounts modules)
 - [ ] Agent does not treat the prospect's interest as a commitment
 
 ---

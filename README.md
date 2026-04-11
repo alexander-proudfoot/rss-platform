@@ -43,7 +43,7 @@ rss-platform/
 ├── methodology/                       # RSS methodology source files
 │   ├── rss-situational-matrix.md      # Foundational matrix framework
 │   ├── rss-5-unit-model.md            # All 5 RSS units with techniques
-│   ├── rss-coaching-methodology.md    # C2E coaching framework
+│   ├── rss-coaching-methodology.md    # RSS coaching: Observe-Think-Decide-Act cycle
 │   ├── rss-sales-mos.md               # Sales Management Operating System
 │   └── miller-heiman-exclusion-register.md  # IP exclusion governance
 ├── skills/                            # SKILL.md files (agent capabilities)

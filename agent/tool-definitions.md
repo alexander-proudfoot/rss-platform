@@ -23,6 +23,7 @@ This document describes the tools available to the RSS Coaching Agent.
 
 ### Usage
 - Before every pre-call coaching session: pull the relevant account, contact, deal, and recent meeting history
+- Before every post-call debrief: pull prior matrix position, coaching observations (SF_Notes), and meeting history to contextualise the debrief
 - Person search: search Contacts module first; check Accounts for company context
 - Company search: search Accounts and Deals for current relationship and pipeline status
 
