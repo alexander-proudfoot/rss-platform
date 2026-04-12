@@ -18,29 +18,41 @@ async function getMatrixPositions(req: HttpRequest, _context: InvocationContext)
   const customerFilter = req.query.get('customer') ?? null
 
   const whereCustomer = customerFilter ? 'AND mp.customer_name = @customer' : ''
-  const result = await query<MatrixPositionRow>(
-    `SELECT mp.id, mp.customer_name, mp.opportunity_name, mp.quadrant, mp.evidence, mp.assessed_at
+  const params = { userOid: principal.userId, ...(customerFilter ? { customer: customerFilter } : {}) }
+
+  // Paginated history: bounded at 200 rows, ordered newest-first
+  const historyResult = await query<MatrixPositionRow>(
+    `SELECT TOP 200 mp.id, mp.customer_name, mp.opportunity_name, mp.quadrant, mp.evidence, mp.assessed_at
      FROM matrix_positions mp
      JOIN salesperson_profiles sp ON mp.salesperson_id = sp.id
      WHERE sp.user_oid = @userOid ${whereCustomer}
      ORDER BY mp.assessed_at DESC`,
-    { userOid: principal.userId, ...(customerFilter ? { customer: customerFilter } : {}) },
+    params,
     req,
   )
 
-  // Build currentPositions: latest entry per customer
-  const latestByCustomer = new Map<string, MatrixPositionRow>()
-  for (const row of result.recordset) {
-    if (!latestByCustomer.has(row.customer_name)) {
-      latestByCustomer.set(row.customer_name, row)
-    }
-  }
+  // Current positions: latest entry per customer, computed via window function so it is
+  // never affected by the TOP 200 history window (a customer with no recent activity
+  // would otherwise be silently dropped from this rollup).
+  const currentResult = await query<MatrixPositionRow>(
+    `SELECT id, customer_name, opportunity_name, quadrant, evidence, assessed_at
+     FROM (
+       SELECT mp.id, mp.customer_name, mp.opportunity_name, mp.quadrant, mp.evidence, mp.assessed_at,
+              ROW_NUMBER() OVER (PARTITION BY mp.customer_name ORDER BY mp.assessed_at DESC) AS rn
+       FROM matrix_positions mp
+       JOIN salesperson_profiles sp ON mp.salesperson_id = sp.id
+       WHERE sp.user_oid = @userOid ${whereCustomer}
+     ) ranked
+     WHERE rn = 1`,
+    params,
+    req,
+  )
 
   return {
     status: 200,
     jsonBody: {
-      history: result.recordset,
-      currentPositions: Array.from(latestByCustomer.values()),
+      history: historyResult.recordset,
+      currentPositions: currentResult.recordset,
     },
   }
 }

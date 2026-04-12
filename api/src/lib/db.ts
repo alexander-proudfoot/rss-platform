@@ -7,13 +7,42 @@ let prodPool: sql.ConnectionPool | null = null
 let previewPool: sql.ConnectionPool | null = null
 
 function parseConnectionString(connStr: string): sql.config {
+  // ADO.NET connection string parser — handles double-quoted values (SqlConnectionStringBuilder
+  // format) so passwords/usernames containing ';' or '=' are parsed correctly.
+  // Accepts both legacy ('Server','Database','User Id') and SqlConnectionStringBuilder
+  // ('Data Source','Initial Catalog','User ID') key names.
   const parts = new Map<string, string>()
-  for (const part of connStr.split(';')) {
-    const eq = part.indexOf('=')
-    if (eq > 0) parts.set(part.slice(0, eq).trim().toLowerCase(), part.slice(eq + 1).trim())
+  let i = 0
+  while (i < connStr.length) {
+    while (i < connStr.length && connStr[i] === ';') i++
+    if (i >= connStr.length) break
+    const kStart = i
+    while (i < connStr.length && connStr[i] !== '=') i++
+    const key = connStr.slice(kStart, i).trim().toLowerCase()
+    i++ // skip '='
+    let val: string
+    if (i < connStr.length && (connStr[i] === '"' || connStr[i] === "'")) {
+      // Quoted value: SqlConnectionStringBuilder uses '"' for passwords containing single-quotes
+      // and "'" for passwords containing double-quotes. Escaped by doubling the quote char.
+      const q = connStr[i]
+      i++ // skip opening quote
+      let raw = ''
+      while (i < connStr.length) {
+        if (connStr[i] === q && connStr[i + 1] === q) { raw += q; i += 2 } // escaped quote
+        else if (connStr[i] === q) { i++; break } // closing quote
+        else { raw += connStr[i++] }
+      }
+      val = raw
+    } else {
+      const vStart = i
+      while (i < connStr.length && connStr[i] !== ';') i++
+      val = connStr.slice(vStart, i).trim()
+    }
+    if (key) parts.set(key, val)
   }
-  const server = (parts.get('server') || '').replace('tcp:', '').split(',')[0]
-  const port = parseInt((parts.get('server') || '').split(',')[1] || '1433', 10)
+  const rawServer = parts.get('server') || parts.get('data source') || ''
+  const server = rawServer.replace(/^tcp:/i, '').split(',')[0]
+  const port = parseInt(rawServer.split(',')[1] || '1433', 10)
   return {
     server,
     port,

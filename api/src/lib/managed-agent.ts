@@ -40,24 +40,19 @@ function sleep(ms: number): Promise<void> {
 }
 
 /**
- * Create a new Managed Agent session and send the first message.
- * Returns the agent's text response and the session ID for future messages.
+ * Create a new Managed Agent session without sending a message.
+ * Use this when you need to claim the session ID before sending (e.g. to guard
+ * against concurrent first-message races with AND agent_session_id IS NULL).
  */
-export async function createSession(
-  userMessage: string,
-  options?: { timeoutMs?: number },
-): Promise<AgentResponse> {
+export async function createSessionOnly(): Promise<string> {
   const anthropic = getClient()
   const agentId = getAgentId()
   const environmentId = getEnvironmentId()
-
   const session = await anthropic.beta.sessions.create({
     agent: agentId,
     environment_id: environmentId,
   })
-  const sessionId = session.id
-
-  return sendMessageToSession(sessionId, userMessage, options)
+  return session.id
 }
 
 /**

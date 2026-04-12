@@ -25,17 +25,13 @@ export async function getJob(jobId: string, req?: HttpRequest): Promise<AiJob | 
 }
 
 /**
- * Submit and execute a job within the current invocation context.
- * The work is awaited (not fire-and-forget) so the Azure Functions runtime
- * keeps the process alive for the duration. The caller returns 202 with the
- * jobId immediately via a separate response, but the work continues within
- * the same invocation boundary.
+ * Create a job record in the database and return the job ID.
+ * The caller is responsible for executing the work via executeJob.
  */
 export async function submitJob(
   salespersonId: string,
   sessionId: string | null,
   jobType: string,
-  work: (jobId: string) => Promise<string>,
   requestSnapshot?: unknown,
   req?: HttpRequest,
 ): Promise<string> {
@@ -58,27 +54,27 @@ export async function submitJob(
 }
 
 /**
- * Execute the work for a previously submitted job. This must be awaited
- * within the Azure Functions invocation to prevent process recycling from
- * killing the work mid-execution.
+ * Execute the work for a previously submitted job.
+ * Safe to call as fire-and-forget: work() failures are caught internally and
+ * written to ai_jobs as status 'failed'. The success-write is outside the work
+ * catch so a DB failure there propagates to the caller's outer .catch() rather
+ * than being misclassified as a work failure. If the error-write itself fails
+ * (e.g. database is down), that also propagates to the caller's outer .catch().
  */
 export async function executeJob(
   jobId: string,
   work: (jobId: string) => Promise<string>,
   req?: HttpRequest,
 ): Promise<void> {
+  await query(
+    `UPDATE ai_jobs SET status = 'processing' WHERE id = @id`,
+    { id: jobId },
+    req,
+  )
+
+  let resultJson: string
   try {
-    await query(
-      `UPDATE ai_jobs SET status = 'processing' WHERE id = @id`,
-      { id: jobId },
-      req,
-    )
-    const resultJson = await work(jobId)
-    await query(
-      `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
-      { id: jobId, resultJson },
-      req,
-    )
+    resultJson = await work(jobId)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     const lower = message.toLowerCase()
@@ -92,10 +88,21 @@ export async function executeJob(
     } else {
       userMessage = 'Coaching generation failed. Please try again.'
     }
+    // No .catch() here: if this write also fails, the error propagates up to
+    // the caller's outer .catch() which logs it.
     await query(
       `UPDATE ai_jobs SET status = 'failed', error_message = @errorMessage, completed_at = GETUTCDATE() WHERE id = @id`,
       { id: jobId, errorMessage: userMessage },
       req,
-    ).catch(() => {})
+    )
+    return
   }
+
+  // work() succeeded — outside the work catch so a DB failure here propagates to
+  // the caller's outer .catch() and is not misclassified as a work failure.
+  await query(
+    `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
+    { id: jobId, resultJson },
+    req,
+  )
 }
