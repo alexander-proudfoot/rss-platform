@@ -1,0 +1,40 @@
+**********************
+PowerShell transcript start
+Start time: 20260412194158
+Username: AzureAD\NeilOBrien
+RunAs User: AzureAD\NeilOBrien
+Configuration Name: 
+Machine: PFT-PW0M9EQX (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoProfile -ExecutionPolicy Bypass -File infra/deploy.ps1 -SqlAdminLogin rssadmin -NonInteractive
+Process ID: 15544
+PSVersion: 7.6.0
+PSEdition: Core
+GitCommitId: 7.6.0
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is C:\Dev\rss-platform\Audit\logs\deploy-20260412-194158.log
+
+=== Step 1: Verify Azure CLI login ===
+Logged in as:    nobrien@proudfoot.com
+Subscription:    PFTstaticwebapp (7b9f5a9a-d1cf-412c-aa1a-1165d0f949e0)
+
+=== Step 2: Resolve deployer object ID ===
+Deployer OID:    c005b4d4-bde9-457b-b778-d63ff381084e
+
+=== Step 3: Prepare deployment parameters ===
+Parameters written to temp file (not logged).
+
+=== Step 4: Ensure resource group 'pft-rss-prod-rg' ===
+
+Resource group ready.
+
+=== Step 5: Deploy Bicep template ===
+**********************
+PowerShell transcript end
+End time: 20260412194213
+**********************
