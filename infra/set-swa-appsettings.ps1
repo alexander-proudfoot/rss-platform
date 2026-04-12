@@ -30,10 +30,12 @@
 .NOTES
   Output is logged to Audit/logs/set-swa-appsettings-{timestamp}.log, then
   committed and pushed to the repo. Secret values are never written to the log.
-  Security: when using -NonInteractive with AZURE_CLIENT_SECRET, the client secret
-  is passed as a process-level command-line argument to az login. This is visible
-  in the process list for the duration of the login call. Use OIDC federated
-  credentials (the default for GitHub Actions) in shared or untrusted environments.
+  Security: (1) when using AZURE_CLIENT_SECRET for SP auth, the secret is passed as
+  a process argument to az login — visible in the process list for the login call.
+  (2) az staticwebapp appsettings set passes all secret values as process arguments
+  (no file/stdin alternative exists in the CLI). Both exposures are limited to the
+  duration of each CLI call. Only run this script on isolated single-user agents.
+  Use OIDC federated credentials (GitHub Actions default) to eliminate exposure (1).
   Directive: D099
 #>
 param(
@@ -129,7 +131,10 @@ try {
 
   # ── 2. Set app settings on SWA ──────────────────────────────────────────────
   # az staticwebapp appsettings set accepts --setting-names KEY=VALUE KEY=VALUE ...
-  # Values are passed as individual KEY=VALUE arguments.
+  # Security note: secret values appear as process-level command-line arguments for the
+  # duration of the az call. They are visible in the OS process list (ps/Task Manager)
+  # on multi-user systems. This is a known limitation of the az staticwebapp CLI surface
+  # (no --file or --stdin equivalent). Only run this script on isolated single-user agents.
   Write-Host "`n=== Step 2: Setting $($appSettings.Count) app setting(s) on SWA '$SwaName' ==="
   $settingArgs = @($appSettings.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" })
   az staticwebapp appsettings set `

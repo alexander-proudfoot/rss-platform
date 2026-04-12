@@ -53,7 +53,7 @@ param(
   [ValidateSet('prod', 'preview')]
   [string]$Environment = 'prod',
 
-  [ValidatePattern('^[a-zA-Z0-9\-]+$')]
+  [ValidatePattern('^[a-z0-9]+$')]
   [string]$Location = 'uksouth',
 
   [Parameter(Mandatory)]
@@ -293,6 +293,9 @@ try {
         --start-ip-address $DeployerIp `
         --end-ip-address $DeployerIp `
         --output none
+      if ($LASTEXITCODE -ne 0) {
+        throw "az sql server firewall-rule create failed (exit $LASTEXITCODE). Verify Contributor access on SQL Server '$SqlServerShortName'."
+      }
 
       try {
         # Use SQLCMDPASSWORD env var — keeps password out of process args and transcript
@@ -305,8 +308,10 @@ try {
           Write-Host "Schema migration complete."
         }
       } finally {
-        # Clear env var and in-memory params object that contains the plain-text password
-        $env:SQLCMDPASSWORD = $null
+        # Clear env var and in-memory params object that contains the plain-text password.
+        # SetEnvironmentVariable($null) removes the variable from the process block entirely;
+        # $env:SQLCMDPASSWORD = $null only sets it to an empty string.
+        [System.Environment]::SetEnvironmentVariable('SQLCMDPASSWORD', $null)
         Remove-Variable paramsObj -ErrorAction SilentlyContinue
         # Always remove the temporary firewall rule, even on failure
         Write-Host "Removing temporary deployer firewall rule..."
