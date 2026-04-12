@@ -31,18 +31,20 @@ async function getProfile(req: HttpRequest, _context: InvocationContext): Promis
   )
 
   if (result.recordset.length === 0) {
-    return { status: 200, jsonBody: null }
+    return { status: 200, jsonBody: { profile: null } }
   }
 
   const row = result.recordset[0]
   return {
     status: 200,
     jsonBody: {
-      id: row.id,
-      display_name: row.display_name,
-      email: row.email,
-      current_focus_unit: row.current_focus_unit,
-      created_at: row.created_at,
+      profile: {
+        id: row.id,
+        display_name: row.display_name,
+        email: row.email,
+        current_focus_unit: row.current_focus_unit,
+        created_at: row.created_at,
+      },
     },
   }
 }
