@@ -133,3 +133,4 @@ cd api && func start
 ### Environment Variables
 
 See `.env.example` for required configuration. All secrets should be stored in Azure Key Vault for production.
+
