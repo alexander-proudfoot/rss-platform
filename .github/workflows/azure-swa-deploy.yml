@@ -15,10 +15,16 @@
 #        az role assignment create --assignee <sp-object-id> \
 #          --role Contributor --scope /subscriptions/<sub>/resourceGroups/pft-rss-prod-rg
 #   4. Add GitHub repo secrets (Settings > Secrets and variables > Actions):
-#        AZURE_CLIENT_ID      = App Registration client ID
-#        AZURE_TENANT_ID      = AAD tenant ID
+#        AZURE_CLIENT_ID       = App Registration client ID
+#        AZURE_TENANT_ID       = AAD tenant ID
 #        AZURE_SUBSCRIPTION_ID = Azure subscription ID
 #   Note: SWA deployment token is fetched dynamically via OIDC — not stored as a secret.
+#
+# SWA staging model:
+#   PRs to main deploy to a staging environment WITHIN the prod SWA resource.
+#   The static-web-apps-deploy action creates/closes named staging slots automatically.
+#   pft-rss-preview is a separate SWA for the preview infrastructure environment,
+#   not used by this workflow.
 
 name: Azure SWA Deploy
 
@@ -47,6 +53,12 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  # PRs create staging slots within the prod SWA resource (Azure SWA staging model).
+  # Pushes to main deploy to the production slot of the same resource.
+  SWA_NAME: pft-rss-prod
+  SWA_RG: pft-rss-prod-rg
+
 jobs:
   build_and_deploy:
     if: >
@@ -72,9 +84,10 @@ jobs:
         id: swa-token
         run: |
           TOKEN=$(az staticwebapp secrets list \
-            --name pft-rss-prod \
-            --resource-group pft-rss-prod-rg \
+            --name "${{ env.SWA_NAME }}" \
+            --resource-group "${{ env.SWA_RG }}" \
             --query "properties.apiKey" -o tsv)
+          echo "::add-mask::$TOKEN"
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Azure Static Web Apps
@@ -106,9 +119,10 @@ jobs:
         id: swa-token
         run: |
           TOKEN=$(az staticwebapp secrets list \
-            --name pft-rss-prod \
-            --resource-group pft-rss-prod-rg \
+            --name "${{ env.SWA_NAME }}" \
+            --resource-group "${{ env.SWA_RG }}" \
             --query "properties.apiKey" -o tsv)
+          echo "::add-mask::$TOKEN"
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
       - name: Close staging environment

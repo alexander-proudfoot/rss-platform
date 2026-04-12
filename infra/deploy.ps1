@@ -209,8 +209,9 @@ try {
           Write-Host "Schema migration complete."
         }
       } finally {
-        # Clear the env var immediately after use
+        # Clear env var and in-memory params object that contains the plain-text password
         $env:SQLCMDPASSWORD = $null
+        Remove-Variable paramsObj -ErrorAction SilentlyContinue
         # Always remove the temporary firewall rule, even on failure
         Write-Host "Removing temporary deployer firewall rule..."
         az sql server firewall-rule delete `
