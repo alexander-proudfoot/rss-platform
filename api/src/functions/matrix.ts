@@ -19,7 +19,7 @@ async function getMatrixPositions(req: HttpRequest, _context: InvocationContext)
 
   const whereCustomer = customerFilter ? 'AND mp.customer_name = @customer' : ''
   const result = await query<MatrixPositionRow>(
-    `SELECT mp.id, mp.customer_name, mp.opportunity_name, mp.quadrant, mp.evidence, mp.assessed_at
+    `SELECT TOP 200 mp.id, mp.customer_name, mp.opportunity_name, mp.quadrant, mp.evidence, mp.assessed_at
      FROM matrix_positions mp
      JOIN salesperson_profiles sp ON mp.salesperson_id = sp.id
      WHERE sp.user_oid = @userOid ${whereCustomer}
