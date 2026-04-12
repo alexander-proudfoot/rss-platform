@@ -1,0 +1,118 @@
+# .github/workflows/azure-swa-deploy.yml
+# RSS Platform — Azure Static Web App CI/CD
+# Directive: D099
+#
+# Prerequisites (one-time setup by deployer, run after deploy.ps1):
+#   1. Create AAD App Registration and Service Principal:
+#        az ad app create --display-name 'rss-platform-prod'
+#        az ad sp create --id <app-client-id>
+#   2. Create federated credential for this repo's main branch:
+#        az ad app federated-credential create --id <app-object-id> \
+#          --parameters '{"name":"github-main","issuer":"https://token.actions.githubusercontent.com",
+#            "subject":"repo:alexander-proudfoot/rss-platform:ref:refs/heads/main",
+#            "audiences":["api://AzureADTokenExchange"]}'
+#   3. Grant the SP Contributor on the resource group:
+#        az role assignment create --assignee <sp-object-id> \
+#          --role Contributor --scope /subscriptions/<sub>/resourceGroups/pft-rss-prod-rg
+#   4. Add GitHub repo secrets (Settings > Secrets and variables > Actions):
+#        AZURE_CLIENT_ID      = App Registration client ID
+#        AZURE_TENANT_ID      = AAD tenant ID
+#        AZURE_SUBSCRIPTION_ID = Azure subscription ID
+#   Note: SWA deployment token is fetched dynamically via OIDC — not stored as a secret.
+
+name: Azure SWA Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'Audit/**'
+      - 'methodology/**'
+      - 'skills/**'
+      - 'agent/**'
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - main
+    paths-ignore:
+      - 'Audit/**'
+      - 'methodology/**'
+      - 'skills/**'
+      - 'agent/**'
+      - '**.md'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build_and_deploy:
+    if: >
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get SWA deployment token
+        id: swa-token
+        run: |
+          TOKEN=$(az staticwebapp secrets list \
+            --name pft-rss-prod \
+            --resource-group pft-rss-prod-rg \
+            --query "properties.apiKey" -o tsv)
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.swa-token.outputs.token }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: /
+          api_location: api
+          output_location: dist
+          app_build_command: npm run build
+          api_build_command: npm run build
+
+  close_pull_request:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request
+
+    steps:
+      - name: Azure Login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Get SWA deployment token
+        id: swa-token
+        run: |
+          TOKEN=$(az staticwebapp secrets list \
+            --name pft-rss-prod \
+            --resource-group pft-rss-prod-rg \
+            --query "properties.apiKey" -o tsv)
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Close staging environment
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.swa-token.outputs.token }}
+          action: close
