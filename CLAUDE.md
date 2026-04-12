@@ -220,3 +220,14 @@ This section grows with each build. Read all entries before writing any code.
 11. **Miller Heiman IP verification is mandatory before every PR.** Run the grep command from the Miller Heiman IP Exclusion section before requesting any code review. A PR with Miller Heiman terminology will be rejected regardless of other quality. This check takes 5 seconds; do not skip it.
 
 12. **David Warren methodology sign-off is a hard gate.** No methodology file may be promoted to production or referenced in production agent config until David Warren has reviewed and approved it in the Methodology Lab. "It looks right" is not sufficient -- it must be formally validated against the RSS source documents.
+
+13. **Pre-push code review is mandatory (D101).** Run pr-review-toolkit (silent-failure-hunter, type-design-analyzer) and /code-review locally before every push. The GitHub Code Review bot is the final safety net at $15-25 per run, not the primary debugging loop. Every issue caught pre-push saves a bot iteration. (Gotcha #29 from template.)
+
+14. **Pattern sweep is literal, not optional (D101 amendment to D092).** When the bot flags an issue, the fix procedure is:
+  1. Identify the PATTERN, not just the line.
+  2. Write a grep/regex that matches ALL instances of this pattern in the entire repo.
+  3. Run that grep.
+  4. Fix EVERY match in a single commit.
+  5. Verify with grep that zero matches remain.
+
+  "Pattern" means the class of problem, not the literal string. Example: if the bot flags a missing LASTEXITCODE check after `az keyvault secret set`, the pattern is "any az CLI call without error handling" -- grep for all `az ` calls in the file and fix them all. Fixing only the flagged line guarantees another bot round at $15-25. Three or more bot rounds on the same class of issue is a build failure. (Gotcha #30 from template.)
