@@ -392,4 +392,3 @@ try {
     Write-Warning "Push manually: git add '$LogRelPath' && git commit -m 'Log: D099 $Environment deployment $Timestamp' && git push"
   }
 }
-# D099 initial deploy triggered 2026-04-12T19:46:58Z
