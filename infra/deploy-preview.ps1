@@ -39,6 +39,7 @@
   Directive: D099
 #>
 param(
+  [ValidatePattern('^[a-z0-9]+$')]
   [string]$Location = 'uksouth',
 
   [Parameter(Mandatory)]

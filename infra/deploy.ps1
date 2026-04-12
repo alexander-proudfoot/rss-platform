@@ -94,12 +94,12 @@ if ($env:AZURE_CLIENT_ID -and $env:AZURE_CLIENT_SECRET -and $env:AZURE_TENANT_ID
 # ── Resolve SQL admin password ────────────────────────────────────────────────
 # Runs before Start-Transcript so the generated password is never captured in the audit log.
 if ($NonInteractive) {
-  # Auto-generate a cryptographically secure 32-character password.
+  # Auto-generate a cryptographically secure 64-character password.
   # Character classes: uppercase, lowercase, digit, special — all guaranteed present.
   $charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+'
   $bytes   = [byte[]]::new(64)
-  [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
-  # Map each byte to a charset character (modulo bias is negligible for 64-char charset)
+  [System.Security.Cryptography.RandomNumberGenerator]::GetBytes($bytes)   # static; no IDisposable created
+  # Map each byte to a charset character (76-char charset; 256 % 76 = 28 → bias < 1 bit for 64-char password)
   $pwChars = [char[]]($bytes | ForEach-Object { $charset[$_ % $charset.Length] })
   # Guarantee at least one of each character class in positions 0-3
   $pwChars[0] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[[System.Security.Cryptography.RandomNumberGenerator]::GetInt32(26)]
