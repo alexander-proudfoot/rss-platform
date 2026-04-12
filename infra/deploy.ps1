@@ -31,6 +31,7 @@
   - Key Vault Secrets Officer on the provisioned Key Vault (assigned by Bicep to the deployer)
   - sqlcmd installed (https://aka.ms/sqlcmdinstall) for schema migration
   - pwsh (PowerShell 7) — do NOT run with powershell.exe 5.1
+  - GitHub admin / branch-protection bypass on alexander-proudfoot/rss-platform (for audit log push)
 
 .NOTES
   Output is logged to Audit/logs/deploy-{timestamp}.log, then committed and pushed to the repo.
@@ -160,13 +161,14 @@ try {
   $ConnStrFile  = [System.IO.Path]::GetTempFileName()
   try {
     Set-Content -Path $ConnStrFile -Value $ConnStr -NoNewline -Encoding UTF8
-    Remove-Variable ConnStr, Password
     az keyvault secret set `
       --vault-name $KvName `
       --name 'SQL-CONNECTION-STRING' `
       --file $ConnStrFile `
       --output none
   } finally {
+    # Clear sensitive variables in finally so they are removed even if Set-Content throws.
+    Remove-Variable ConnStr, Password -ErrorAction SilentlyContinue
     Remove-Item $ConnStrFile -Force -ErrorAction SilentlyContinue
   }
   Write-Host "SQL-CONNECTION-STRING written."
@@ -270,18 +272,25 @@ try {
   Write-Host "Log saved to: $LogFile"
 
 } finally {
+  # Clear paramsObj if Step 6 threw after assigning it (covers exception paths
+  # where the inner finally in Step 6 did not run).
+  Remove-Variable paramsObj -ErrorAction SilentlyContinue
   # Clean up temp params file containing the plain-text password
   if (Test-Path $TempParamsFile) {
     Remove-Item $TempParamsFile -Force -ErrorAction SilentlyContinue
   }
   # Stop-Transcript is idempotent — safe to call even if already stopped above
   try { Stop-Transcript } catch { }
-  # Commit the audit log to the repo — per CLAUDE.md Script Logging protocol
+  # Commit the audit log to the repo — per CLAUDE.md Script Logging protocol.
+  # Requires branch protection bypass (deployer must have admin access to push main directly).
+  $LogRelPath = "Audit/logs/deploy-$Timestamp.log"
   try {
-    git -C $RepoRoot add "Audit/logs/deploy-$Timestamp.log"
+    git -C $RepoRoot add $LogRelPath
     git -C $RepoRoot commit -m "Log: D099 $Environment deployment $Timestamp"
     git -C $RepoRoot push
+    Write-Host "Audit log committed: $LogRelPath"
   } catch {
-    Write-Warning "Audit log could not be committed to repo: $_"
+    Write-Warning "Audit log push failed (admin branch bypass required): $_"
+    Write-Warning "Push manually: git add '$LogRelPath' && git commit -m 'Log: D099 $Environment deployment $Timestamp' && git push"
   }
 }

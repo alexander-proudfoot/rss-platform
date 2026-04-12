@@ -1206,12 +1206,7 @@ Run these in order. Fix any findings before creating the PR.
 
 - [ ] **Step 1: Miller Heiman IP exclusion check (KG#11 — mandatory)**
 
-```bash
-grep -rni "economic buyer\|user buyer\|technical buyer\|buying influence\|win-results\|red flag\|sponsorship gap\|concept.*mode.*rating\|perspective.*strateg\|even keel\|overconfident" \
-  --include="*.md" --include="*.yaml" --include="*.json" . \
-  | grep -v "miller-heiman-exclusion-register" \
-  | grep -v "MUST NEVER\|EXCLUDED\|Exclusion\|never.*use\|never appear"
-```
+Run the Miller Heiman IP exclusion check from the "Miller Heiman IP Exclusion" section of CLAUDE.md. Must return zero results before the PR is submitted.
 
 Expected: zero results. If any results appear, fix before proceeding.
 

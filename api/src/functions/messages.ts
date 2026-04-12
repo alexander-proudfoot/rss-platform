@@ -2,7 +2,7 @@ import { app, type HttpRequest, type HttpResponseInit, type InvocationContext } 
 import { getClientPrincipal } from '../lib/auth.js'
 import { query } from '../lib/db.js'
 import { submitJob, executeJob } from '../lib/jobs.js'
-import { createSession as createAgentSession, sendMessageToSession } from '../lib/managed-agent.js'
+import { createSessionOnly, sendMessageToSession } from '../lib/managed-agent.js'
 import { v4 as uuidv4 } from 'uuid'
 
 async function sendMessage(req: HttpRequest, _context: InvocationContext): Promise<HttpResponseInit> {
@@ -42,23 +42,24 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
     if (session.agent_session_id) {
       agentResponse = await sendMessageToSession(session.agent_session_id, messageContent)
     } else {
-      agentResponse = await createAgentSession(messageContent)
-      // Guard against concurrent requests: only write if agent_session_id is still null.
-      // If another request won the race, re-read its session ID and use that instead.
+      // Two-step pattern: create the session first (no message), then run the
+      // IS NULL guard, then send the message only to the winning session.
+      // This prevents double-send: createSession+send in one call meant the
+      // losing concurrent request would send the message twice.
+      const newSessionId = await createSessionOnly()
       const { rowsAffected } = await query(
         'UPDATE coaching_sessions SET agent_session_id = @agentSessionId WHERE id = @sessionId AND agent_session_id IS NULL',
-        { agentSessionId: agentResponse.sessionId, sessionId },
+        { agentSessionId: newSessionId, sessionId },
         req,
       )
-      if (rowsAffected[0] === 0) {
-        const current = await query<{ agent_session_id: string }>(
-          'SELECT agent_session_id FROM coaching_sessions WHERE id = @sessionId',
-          { sessionId },
-          req,
-        )
-        const existingId = current.recordset[0]?.agent_session_id
-        if (existingId) agentResponse = await sendMessageToSession(existingId, messageContent)
-      }
+      const winningSessionId = rowsAffected[0] > 0
+        ? newSessionId
+        : ((await query<{ agent_session_id: string }>(
+            'SELECT agent_session_id FROM coaching_sessions WHERE id = @sessionId',
+            { sessionId },
+            req,
+          )).recordset[0]?.agent_session_id ?? newSessionId)
+      agentResponse = await sendMessageToSession(winningSessionId, messageContent)
     }
 
     // Save assistant message

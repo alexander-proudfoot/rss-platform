@@ -55,37 +55,26 @@ export async function submitJob(
 
 /**
  * Execute the work for a previously submitted job.
- * Safe to call as fire-and-forget: errors are caught internally and written to
- * the ai_jobs record as status 'failed' with a user-friendly message. If the
- * error-write itself fails (e.g. database is down), the job remains in 'processing'
- * status; the caller's outer .catch() should log that secondary failure.
+ * Safe to call as fire-and-forget: work() failures are caught internally and
+ * written to ai_jobs as status 'failed'. The success-write is outside the work
+ * catch so a DB failure there propagates to the caller's outer .catch() rather
+ * than being misclassified as a work failure. If the error-write itself fails
+ * (e.g. database is down), that also propagates to the caller's outer .catch().
  */
 export async function executeJob(
   jobId: string,
   work: (jobId: string) => Promise<string>,
   req?: HttpRequest,
 ): Promise<void> {
+  await query(
+    `UPDATE ai_jobs SET status = 'processing' WHERE id = @id`,
+    { id: jobId },
+    req,
+  )
+
+  let resultJson: string
   try {
-    await query(
-      `UPDATE ai_jobs SET status = 'processing' WHERE id = @id`,
-      { id: jobId },
-      req,
-    )
-    const resultJson = await work(jobId)
-    // Separate try/catch so a DB write failure here is not misclassified as a
-    // work() failure — the agent already produced a response, so marking the job
-    // 'failed' with a coaching error message would be misleading.
-    try {
-      await query(
-        `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
-        { id: jobId, resultJson },
-        req,
-      )
-    } catch (writeErr) {
-      console.error(`[jobs] result-write failed jobId=${jobId}:`, writeErr)
-      // Job remains in 'processing' — better than 'failed' when work succeeded.
-    }
-    return
+    resultJson = await work(jobId)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     const lower = message.toLowerCase()
@@ -99,13 +88,21 @@ export async function executeJob(
     } else {
       userMessage = 'Coaching generation failed. Please try again.'
     }
-    // No .catch() here: if this write also fails, the error propagates up to executeJob's
-    // caller (messages.ts outer .catch()) which logs it. Without propagation, executeJob
-    // resolves successfully and the secondary DB failure is completely invisible.
+    // No .catch() here: if this write also fails, the error propagates up to
+    // the caller's outer .catch() which logs it.
     await query(
       `UPDATE ai_jobs SET status = 'failed', error_message = @errorMessage, completed_at = GETUTCDATE() WHERE id = @id`,
       { id: jobId, errorMessage: userMessage },
       req,
     )
+    return
   }
+
+  // work() succeeded — outside the work catch so a DB failure here propagates to
+  // the caller's outer .catch() and is not misclassified as a work failure.
+  await query(
+    `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
+    { id: jobId, resultJson },
+    req,
+  )
 }
