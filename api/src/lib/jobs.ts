@@ -72,11 +72,20 @@ export async function executeJob(
       req,
     )
     const resultJson = await work(jobId)
-    await query(
-      `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
-      { id: jobId, resultJson },
-      req,
-    )
+    // Separate try/catch so a DB write failure here is not misclassified as a
+    // work() failure — the agent already produced a response, so marking the job
+    // 'failed' with a coaching error message would be misleading.
+    try {
+      await query(
+        `UPDATE ai_jobs SET status = 'complete', result_json = @resultJson, completed_at = GETUTCDATE() WHERE id = @id`,
+        { id: jobId, resultJson },
+        req,
+      )
+    } catch (writeErr) {
+      console.error(`[jobs] result-write failed jobId=${jobId}:`, writeErr)
+      // Job remains in 'processing' — better than 'failed' when work succeeded.
+    }
+    return
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     const lower = message.toLowerCase()

@@ -33,7 +33,7 @@
   - pwsh (PowerShell 7) — do NOT run with powershell.exe 5.1
 
 .NOTES
-  Output is logged to Audit/logs/deploy-{timestamp}.log and committed to the repo.
+  Output is logged to Audit/logs/deploy-{timestamp}.log, then committed and pushed to the repo.
   Secrets (passwords, connection strings, SWA token) are never written to the log.
   Directive: D099
 #>
@@ -83,7 +83,6 @@ try {
   $account = az account show --output json 2>$null | ConvertFrom-Json
   if (-not $account) {
     Write-Error "Not logged in to Azure CLI. Run: az login"
-    exit 1
   }
   Write-Host "Logged in as:    $($account.user.name)"
   Write-Host "Subscription:    $($account.name) ($($account.id))"
@@ -135,7 +134,6 @@ try {
 
   if ($LASTEXITCODE -ne 0) {
     Write-Error "Bicep deployment failed (exit $LASTEXITCODE)"
-    exit 1
   }
 
   $SqlServerFqdn = $DeployOutput.properties.outputs.sqlServerFqdn.value
@@ -188,7 +186,6 @@ try {
       $SchemaFile = Join-Path $RepoRoot 'database' '001-initial-schema.sql'
       if (-not (Test-Path $SchemaFile)) {
         Write-Error "Schema file not found: $SchemaFile"
-        exit 1
       }
 
       # Temporarily open deployer IP in SQL firewall for schema migration
@@ -275,8 +272,16 @@ try {
 } finally {
   # Clean up temp params file containing the plain-text password
   if (Test-Path $TempParamsFile) {
-    Remove-Item $TempParamsFile -Force
+    Remove-Item $TempParamsFile -Force -ErrorAction SilentlyContinue
   }
   # Stop-Transcript is idempotent — safe to call even if already stopped above
   try { Stop-Transcript } catch { }
+  # Commit the audit log to the repo — per CLAUDE.md Script Logging protocol
+  try {
+    git -C $RepoRoot add "Audit/logs/deploy-$Timestamp.log"
+    git -C $RepoRoot commit -m "Log: D099 $Environment deployment $Timestamp"
+    git -C $RepoRoot push
+  } catch {
+    Write-Warning "Audit log could not be committed to repo: $_"
+  }
 }

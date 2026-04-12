@@ -43,11 +43,22 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
       agentResponse = await sendMessageToSession(session.agent_session_id, messageContent)
     } else {
       agentResponse = await createAgentSession(messageContent)
-      await query(
-        'UPDATE coaching_sessions SET agent_session_id = @agentSessionId WHERE id = @sessionId',
+      // Guard against concurrent requests: only write if agent_session_id is still null.
+      // If another request won the race, re-read its session ID and use that instead.
+      const { rowsAffected } = await query(
+        'UPDATE coaching_sessions SET agent_session_id = @agentSessionId WHERE id = @sessionId AND agent_session_id IS NULL',
         { agentSessionId: agentResponse.sessionId, sessionId },
         req,
       )
+      if (rowsAffected[0] === 0) {
+        const current = await query<{ agent_session_id: string }>(
+          'SELECT agent_session_id FROM coaching_sessions WHERE id = @sessionId',
+          { sessionId },
+          req,
+        )
+        const existingId = current.recordset[0]?.agent_session_id
+        if (existingId) agentResponse = await sendMessageToSession(existingId, messageContent)
+      }
     }
 
     // Save assistant message
