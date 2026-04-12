@@ -1,0 +1,53 @@
+**********************
+PowerShell transcript start
+Start time: 20260412204435
+Username: AzureAD\NeilOBrien
+RunAs User: AzureAD\NeilOBrien
+Configuration Name: 
+Machine: PFT-PW0M9EQX (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoProfile -ExecutionPolicy Bypass -File infra/set-swa-appsettings.ps1 -Environment prod
+Process ID: 38564
+PSVersion: 7.6.0
+PSEdition: Core
+GitCommitId: 7.6.0
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is C:\Dev\rss-platform\Audit\logs\set-swa-appsettings-20260412-204435.log
+=== RSS Platform SWA App Settings Delivery ===
+Environment:    prod
+Resource Group: pft-rss-prod-rg
+Key Vault:      pft-kv-rss-prod
+SWA:            pft-rss-prod
+
+=== Step 1: Reading secrets from Key Vault 'pft-kv-rss-prod' ===
+  Reading: SQL-CONNECTION-STRING ...
+  OK:      SQL-CONNECTION-STRING -> SQL_CONNECTION_STRING
+  Reading: ANTHROPIC-API-KEY ...
+  OK:      ANTHROPIC-API-KEY -> ANTHROPIC_API_KEY
+  Reading: MANAGED-AGENT-ID ...
+  OK:      MANAGED-AGENT-ID -> MANAGED_AGENT_ID
+  Reading: MANAGED-ENVIRONMENT-ID ...
+  OK:      MANAGED-ENVIRONMENT-ID -> MANAGED_ENVIRONMENT_ID
+  Reading: AZURE-CLIENT-ID ...
+  OK:      AZURE-CLIENT-ID -> AZURE_CLIENT_ID
+  Reading: AZURE-CLIENT-SECRET ...
+  OK:      AZURE-CLIENT-SECRET -> AZURE_CLIENT_SECRET
+
+=== Step 2: Setting 6 app setting(s) on SWA 'pft-rss-prod' ===
+
+App settings set OK.
+
+============================================================
+SWA APP SETTINGS DELIVERY COMPLETE — prod
+============================================================
+All secrets delivered successfully.
+Log: C:\Dev\rss-platform\Audit\logs\set-swa-appsettings-20260412-204435.log
+**********************
+PowerShell transcript end
+End time: 20260412204513
+**********************
