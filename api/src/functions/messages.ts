@@ -36,9 +36,6 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
     req,
   )
 
-  // Submit job record and execute within invocation context.
-  // The work is awaited (not fire-and-forget) to prevent Azure Functions
-  // from recycling the process mid-execution.
   const messageContent = body.content
   const work = async (_jobId: string) => {
     let agentResponse
@@ -68,16 +65,19 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
     session.salesperson_id,
     sessionId,
     'coaching_message',
-    work,
     { content: messageContent },
     req,
   )
 
-  // Execute the job within this invocation so the Functions runtime
-  // keeps the process alive until completion
-  await executeJob(jobId, work, req)
+  // Fire-and-forget: start agent work in the background, return 202 immediately.
+  // executeJob handles its own errors internally (catches and sets job to 'failed').
+  // The outer .catch() captures secondary failures (e.g. if the DB is also down
+  // and executeJob's internal error-write fails) so they appear in Function logs.
+  void executeJob(jobId, work, req).catch((err) => {
+    console.error(`[jobs] executeJob secondary failure jobId=${jobId}:`, err)
+  })
 
-  return { status: 200, jsonBody: { jobId } }
+  return { status: 202, jsonBody: { jobId } }
 }
 
 app.http('sendMessage', {
