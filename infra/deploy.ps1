@@ -74,7 +74,7 @@ $LogDir     = Join-Path $RepoRoot 'Audit' 'logs'
 if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir | Out-Null }
 $Timestamp  = Get-Date -Format 'yyyyMMdd-HHmmss'
 $LogFile    = Join-Path $LogDir "deploy-$Timestamp.log"
-$TempParamsFile = [System.IO.Path]::GetTempFileName() -replace '\.tmp$', '.json'
+$TempParamsFile = [System.IO.Path]::GetTempFileName()
 Start-Transcript -Path $LogFile
 
 try {
@@ -166,7 +166,7 @@ try {
     az keyvault secret set `
       --vault-name $KvName `
       --name 'SQL-CONNECTION-STRING' `
-      --value "@$ConnStrFile" `
+      --file $ConnStrFile `
       --output none
   } finally {
     Remove-Item $ConnStrFile -Force -ErrorAction SilentlyContinue

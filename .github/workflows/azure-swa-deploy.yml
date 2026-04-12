@@ -52,6 +52,7 @@ on:
 permissions:
   id-token: write
   contents: read
+  pull-requests: write
 
 env:
   # PRs create staging slots within the prod SWA resource (Azure SWA staging model).
