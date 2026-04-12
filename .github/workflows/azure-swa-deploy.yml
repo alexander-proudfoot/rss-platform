@@ -6,10 +6,14 @@
 #   1. Create AAD App Registration and Service Principal:
 #        az ad app create --display-name 'rss-platform-prod'
 #        az ad sp create --id <app-client-id>
-#   2. Create federated credential for this repo's main branch:
+#   2. Create federated credentials — one for push-to-main, one for pull_request events:
 #        az ad app federated-credential create --id <app-object-id> \
 #          --parameters '{"name":"github-main","issuer":"https://token.actions.githubusercontent.com",
 #            "subject":"repo:alexander-proudfoot/rss-platform:ref:refs/heads/main",
+#            "audiences":["api://AzureADTokenExchange"]}'
+#        az ad app federated-credential create --id <app-object-id> \
+#          --parameters '{"name":"github-pr","issuer":"https://token.actions.githubusercontent.com",
+#            "subject":"repo:alexander-proudfoot/rss-platform:pull_request",
 #            "audiences":["api://AzureADTokenExchange"]}'
 #   3. Grant the SP Contributor on the resource group:
 #        az role assignment create --assignee <sp-object-id> \

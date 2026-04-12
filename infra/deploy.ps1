@@ -109,8 +109,8 @@ try {
   } | ConvertTo-Json -Depth 5
   Set-Content -Path $TempParamsFile -Value $paramsJson -Encoding UTF8
   Write-Host "Parameters written to temp file (not logged)."
-  # Password plain-text is only needed in the temp file now; clear the variable.
-  Remove-Variable SqlPasswordPlain
+  # Clear all in-memory variables that held the plain-text password.
+  Remove-Variable SqlPasswordPlain, paramsJson
 
   # ── 4. Ensure resource group exists ─────────────────────────────────────────
   Write-Host "`n=== Step 4: Ensure resource group '$ResourceGroup' ==="
@@ -150,7 +150,7 @@ try {
   Write-Host "SWA Hostname:    $SwaHostname"
 
   # ── 6. Write SQL connection string to Key Vault via temp file ───────────────
-  # az keyvault secret set supports --value @filepath to read from a file.
+  # az keyvault secret set --file reads the secret value from a file.
   # Using a temp file keeps the connection string out of CLI args and transcript.
   Write-Host "`n=== Step 6: Write SQL-CONNECTION-STRING to Key Vault ==="
   $paramsObj    = Get-Content $TempParamsFile | ConvertFrom-Json
@@ -229,6 +229,9 @@ try {
       }
     }
   }
+  # Clear paramsObj if it was not already cleared inside step 7's finally block
+  # (i.e. when -SkipSchemaMigration was set or sqlcmd was not found).
+  Remove-Variable paramsObj -ErrorAction SilentlyContinue
 
   # ── 8. Note SWA deployment token retrieval command ──────────────────────────
   # The token is NOT retrieved here to avoid it appearing in the audit log.
