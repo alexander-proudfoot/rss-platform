@@ -90,3 +90,46 @@ Miller Heiman IP exclusion register: [methodology/miller-heiman-exclusion-regist
 D098 — RSS Platform Phase 1 (2026-04-10)
 
 (c) 2026 Proudfoot. All rights reserved. Confidential and proprietary.
+
+---
+
+## Phase 2: SWA + Managed Agent Backend (D099)
+
+Phase 2 adds a web-based coaching platform (Azure Static Web App) that connects to the RSS Managed Agent.
+
+### Architecture
+
+- **Frontend:** React 19 + Vite + TypeScript + Tailwind v4
+- **Backend:** Azure Functions v4 (Node 20)
+- **Database:** Azure SQL
+- **AI:** Claude Managed Agent (Anthropic)
+- **Auth:** Azure AD via SWA built-in auth
+
+### Screens
+
+| Screen | Path | Purpose |
+|--------|------|---------|
+| Coaching | `/coaching` | Chat panel with pre-call, post-call, and dev review modes |
+| Matrix | `/matrix` | Situational Matrix 4-quadrant visualization |
+| Dashboard | `/dashboard` | Development profile with per-unit scores and trends |
+| History | `/history` | Browse past coaching sessions |
+
+### Local Development
+
+```bash
+# Install dependencies
+npm ci && cd api && npm ci && cd ..
+
+# Copy environment variables
+cp .env.example api/local.settings.json  # Adapt format for Azure Functions
+
+# Start frontend dev server
+npm run dev
+
+# Start API (requires Azure Functions Core Tools)
+cd api && func start
+```
+
+### Environment Variables
+
+See `.env.example` for required configuration. All secrets should be stored in Azure Key Vault for production.

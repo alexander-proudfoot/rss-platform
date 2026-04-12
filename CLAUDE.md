@@ -1,28 +1,34 @@
 # rss-platform -- Claude Code Context
 
-**Template version:** 4.3 (adapted for Claude Managed Agents architecture, Amendment 1: 14 plugins, 2026-04-10)
+**Template version:** 4.3.1 (Phase 2: SWA + Managed Agent, D099, 2026-04-11)
 
 ## Project
 
-- RSS Platform: AI sales coaching agent built on Claude Managed Agents (Anthropic infrastructure)
-- No SWA, no Azure Functions, no Azure hosting -- the agent runs on Anthropic's managed infrastructure
-- Agent accessed via the Claude API (no web frontend in Phase 1)
+- RSS Platform: AI sales coaching platform with SWA frontend + Claude Managed Agent backend
+- Phase 1 (merged): Methodology knowledge base, agent skills, agent config (Anthropic Managed Agents)
+- Phase 2 (D099): SWA deployment with React 19 + Vite + TypeScript + Tailwind v4 + Azure Functions + Azure SQL
 - Issues: New issues auto-added to [Product Board](https://github.com/orgs/alexander-proudfoot/projects/3) via `.github/workflows/auto-add-to-project.yml`
 
-## Claude Managed Agents
+## Architecture (Phase 2)
 
-This is NOT a Static Web Apps application. The RSS Platform agent runs entirely on Anthropic's managed infrastructure, deployed via the Claude Managed Agents API (launched April 8, 2026).
+The RSS Platform is a Static Web App (SWA) with an Azure Functions API backend that integrates with a Claude Managed Agent for AI coaching.
 
-Key architecture facts:
+**Frontend:** React 19 + Vite + TypeScript + Tailwind v4. Four screens: Coaching (chat), Matrix (situational grid), Dashboard (development tracking), History (session browser).
 
-- **No Azure hosting.** No SWA, no Azure Functions, no Container Apps, no Azure App Service.
-- **No web frontend in Phase 1.** The agent is accessed directly via the Claude API.
-- **Deployment:** Claude Managed Agents API. No GitHub Actions deploy pipeline to Azure.
+**Backend:** Azure Functions v4 (Node 20). Endpoints for coaching sessions, messages (async via job queue), profiles, observations, trends, matrix positions. Core libraries in `api/src/lib/`: auth.ts, db.ts, jobs.ts, managed-agent.ts.
+
+**AI Integration:** Claude Managed Agent accessed via Anthropic SDK with `managed-agents-2026-04-01` beta header. Session create/poll/extract pattern (from Imerys). Multi-turn coaching conversations via persistent agent sessions.
+
+**Database:** Azure SQL with mssql driver (connection pooling). Tables: salesperson_profiles, coaching_sessions, coaching_messages, observation_log, matrix_positions, ai_jobs.
+
+**Auth:** Azure AD via SWA built-in auth. ClientPrincipal extracted from `x-ms-client-principal` header. No MSAL.
+
+**Phase 1 content** (methodology/, skills/, agent/) is untouched and carries forward.
+
+### Agent Configuration (Phase 1, unchanged)
+
 - **Agent configuration:** `agent/managed-agent-config.yaml` -- defines the agent ID, model, tools, and knowledge file references.
 - **System instructions:** `agent/system-instructions.md` -- the agent's persistent system prompt, referencing RSS methodology and skill files.
-- **Authentication:** Handled by the Anthropic API (API key). No AAD, no SWA auth, no MSAL.
-
-Do not introduce Azure hosting patterns, SWA config files, or MSAL auth into this repo.
 
 ## Plugins (D078, Amendment 1)
 
