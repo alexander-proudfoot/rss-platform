@@ -9,7 +9,6 @@ param environment string
 param location string
 
 @description('SQL Server administrator login')
-@secure()
 param sqlAdminLogin string
 
 @description('SQL Server administrator password')

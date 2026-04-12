@@ -155,9 +155,17 @@ try {
   $paramsObj    = Get-Content $TempParamsFile | ConvertFrom-Json
   $Login        = $paramsObj.parameters.sqlAdminLogin.value
   $Password     = $paramsObj.parameters.sqlAdminPassword.value
-  $ConnStr      = "Server=tcp:$SqlServerFqdn,1433;Database=$DatabaseName;" +
-                  "User Id=$Login;Password=$Password;" +
-                  "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  # Use SqlConnectionStringBuilder to safely handle special characters in credentials.
+  # Raw string interpolation would allow passwords containing ';' to inject extra key=value pairs.
+  $builder = [System.Data.SqlClient.SqlConnectionStringBuilder]::new()
+  $builder.DataSource = "tcp:$SqlServerFqdn,1433"
+  $builder.InitialCatalog = $DatabaseName
+  $builder.UserID = $Login
+  $builder.Password = $Password
+  $builder.Encrypt = $true
+  $builder.TrustServerCertificate = $false
+  $builder.ConnectTimeout = 30
+  $ConnStr = $builder.ConnectionString
   $ConnStrFile  = [System.IO.Path]::GetTempFileName()
   try {
     Set-Content -Path $ConnStrFile -Value $ConnStr -NoNewline -Encoding UTF8
@@ -166,6 +174,8 @@ try {
       --name 'SQL-CONNECTION-STRING' `
       --file $ConnStrFile `
       --output none
+    # az CLI exit codes are not promoted by $ErrorActionPreference = Stop — check explicitly.
+    if ($LASTEXITCODE -ne 0) { Write-Error "az keyvault secret set failed (exit $LASTEXITCODE)" }
   } finally {
     # Clear sensitive variables in finally so they are removed even if Set-Content throws.
     Remove-Variable ConnStr, Password -ErrorAction SilentlyContinue

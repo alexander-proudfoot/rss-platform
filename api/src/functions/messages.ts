@@ -52,13 +52,21 @@ async function sendMessage(req: HttpRequest, _context: InvocationContext): Promi
         { agentSessionId: newSessionId, sessionId },
         req,
       )
-      const winningSessionId = rowsAffected[0] > 0
-        ? newSessionId
-        : ((await query<{ agent_session_id: string }>(
-            'SELECT agent_session_id FROM coaching_sessions WHERE id = @sessionId',
-            { sessionId },
-            req,
-          )).recordset[0]?.agent_session_id ?? newSessionId)
+      let winningSessionId: string
+      if (rowsAffected[0] > 0) {
+        winningSessionId = newSessionId
+      } else {
+        // Lost the race — newSessionId is orphaned at Anthropic (no DB record, never used).
+        console.warn(`[messages] orphaned agent session ${newSessionId} — race lost for coaching session ${sessionId}`)
+        const current = await query<{ agent_session_id: string }>(
+          'SELECT agent_session_id FROM coaching_sessions WHERE id = @sessionId',
+          { sessionId },
+          req,
+        )
+        const existingId = current.recordset[0]?.agent_session_id
+        if (!existingId) throw new Error('[session_error] Coaching session not found after concurrent creation race')
+        winningSessionId = existingId
+      }
       agentResponse = await sendMessageToSession(winningSessionId, messageContent)
     }
 

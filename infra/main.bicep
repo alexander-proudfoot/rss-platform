@@ -27,7 +27,6 @@ param environment string = 'prod'
 param location string = 'uksouth'
 
 @description('SQL Server administrator login name')
-@secure()
 param sqlAdminLogin string
 
 @description('SQL Server administrator password')
