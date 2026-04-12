@@ -90,10 +90,13 @@ export async function executeJob(
     } else {
       userMessage = 'Coaching generation failed. Please try again.'
     }
+    // No .catch() here: if this write also fails, the error propagates up to executeJob's
+    // caller (messages.ts outer .catch()) which logs it. Without propagation, executeJob
+    // resolves successfully and the secondary DB failure is completely invisible.
     await query(
       `UPDATE ai_jobs SET status = 'failed', error_message = @errorMessage, completed_at = GETUTCDATE() WHERE id = @id`,
       { id: jobId, errorMessage: userMessage },
       req,
-    ).catch(() => {})
+    )
   }
 }
