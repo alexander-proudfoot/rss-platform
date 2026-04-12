@@ -1,0 +1,42 @@
+**********************
+PowerShell transcript start
+Start time: 20260412205804
+Username: AzureAD\NeilOBrien
+RunAs User: AzureAD\NeilOBrien
+Configuration Name: 
+Machine: PFT-PW0M9EQX (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoProfile -ExecutionPolicy Bypass -File infra/migrate-schema.ps1 -Environment prod
+Process ID: 12740
+PSVersion: 7.6.0
+PSEdition: Core
+GitCommitId: 7.6.0
+OS: Microsoft Windows 10.0.26200
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.4
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Transcript started, output file is C:\Dev\rss-platform\Audit\logs\migrate-schema-20260412-205804.log
+=== RSS Platform Schema Migration ===
+Environment:    prod
+Resource Group: pft-rss-prod-rg
+Key Vault:      pft-kv-rss-prod
+
+=== Step 1: Reading SQL-CONNECTION-STRING from Key Vault 'pft-kv-rss-prod' ===
+Connection string read OK.
+
+=== Step 2: Parsing connection string ===
+Server:   pft-sql-rss-prod.database.windows.net,1433
+Database: pft-rss-prod-db
+User:     rssadmin
+Password: [redacted]
+
+=== Step 3: Locating schema file ===
+Schema file: C:\Dev\rss-platform\database\001-initial-schema.sql
+
+=== Step 4: Running sqlcmd ===
+**********************
+PowerShell transcript end
+End time: 20260412205807
+**********************
