@@ -60,7 +60,7 @@ export const useStore = create<AppState>((set) => ({
   loadProfile: async () => {
     set({ profileLoading: true })
     try {
-      const profile = await apiFetch<SalespersonProfile | null>('/api/profile')
+      const { profile } = await apiFetch<{ profile: SalespersonProfile | null }>('/api/profile')
       set({ profile })
     } finally {
       set({ profileLoading: false })
