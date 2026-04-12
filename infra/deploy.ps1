@@ -149,22 +149,28 @@ try {
   Write-Host "Key Vault:       $KvUri"
   Write-Host "SWA Hostname:    $SwaHostname"
 
-  # ── 6. Write SQL connection string to Key Vault (piped via stdin, not CLI arg) ──
+  # ── 6. Write SQL connection string to Key Vault via temp file ───────────────
+  # az keyvault secret set supports --value @filepath to read from a file.
+  # Using a temp file keeps the connection string out of CLI args and transcript.
   Write-Host "`n=== Step 6: Write SQL-CONNECTION-STRING to Key Vault ==="
-  # Re-read password from params file to build the connection string
-  $paramsObj   = Get-Content $TempParamsFile | ConvertFrom-Json
-  $Login       = $paramsObj.parameters.sqlAdminLogin.value
-  $Password    = $paramsObj.parameters.sqlAdminPassword.value
-  $ConnStr     = "Server=tcp:$SqlServerFqdn,1433;Database=$DatabaseName;" +
-                 "User Id=$Login;Password=$Password;" +
-                 "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-  # Pipe via stdin so the secret value does not appear in CLI args or transcript
-  $ConnStr | az keyvault secret set `
-    --vault-name $KvName `
-    --name 'SQL-CONNECTION-STRING' `
-    --value '@-' `
-    --output none
-  Remove-Variable ConnStr, Password
+  $paramsObj    = Get-Content $TempParamsFile | ConvertFrom-Json
+  $Login        = $paramsObj.parameters.sqlAdminLogin.value
+  $Password     = $paramsObj.parameters.sqlAdminPassword.value
+  $ConnStr      = "Server=tcp:$SqlServerFqdn,1433;Database=$DatabaseName;" +
+                  "User Id=$Login;Password=$Password;" +
+                  "Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  $ConnStrFile  = [System.IO.Path]::GetTempFileName()
+  try {
+    Set-Content -Path $ConnStrFile -Value $ConnStr -NoNewline -Encoding UTF8
+    Remove-Variable ConnStr, Password
+    az keyvault secret set `
+      --vault-name $KvName `
+      --name 'SQL-CONNECTION-STRING' `
+      --value "@$ConnStrFile" `
+      --output none
+  } finally {
+    Remove-Item $ConnStrFile -Force -ErrorAction SilentlyContinue
+  }
   Write-Host "SQL-CONNECTION-STRING written."
 
   # ── 7. Schema migration ──────────────────────────────────────────────────────
@@ -224,19 +230,14 @@ try {
     }
   }
 
-  # ── 8. Retrieve SWA deployment token ────────────────────────────────────────
+  # ── 8. Note SWA deployment token retrieval command ──────────────────────────
+  # The token is NOT retrieved here to avoid it appearing in the audit log.
+  # Neil retrieves it post-deploy using the command shown in the summary below.
+  $SwaName = "pft-rss-$Environment"
   Write-Host "`n=== Step 8: SWA deployment token ==="
-  $SwaName  = "pft-rss-$Environment"
-  $SwaToken = az staticwebapp secrets list `
-    --name $SwaName `
-    --resource-group $ResourceGroup `
-    --query "properties.apiKey" -o tsv
-  Write-Host "SWA deployment token retrieved."
+  Write-Host "Token retrieval deferred — see summary below for the command."
 
-  # ── 9. Summary ───────────────────────────────────────────────────────────────
-  # Stop transcript before printing secrets — SWA token must not be committed to repo
-  Stop-Transcript
-
+  # ── 9. Summary (transcript still running — audit log captures this block) ────
   Write-Host ""
   Write-Host "============================================================"
   Write-Host "DEPLOYMENT COMPLETE — $Environment"
@@ -254,10 +255,11 @@ try {
   Write-Host "  [ ] AZURE-CLIENT-SECRET     From: AAD App Registration (see below)"
   Write-Host ""
   Write-Host "GitHub Actions secrets to add to alexander-proudfoot/rss-platform:"
-  Write-Host "  AZURE_STATIC_WEB_APPS_API_TOKEN  = $SwaToken"
-  Write-Host "  AZURE_CLIENT_ID                  = (from AAD App Registration)"
-  Write-Host "  AZURE_TENANT_ID                  = $($account.tenantId)"
-  Write-Host "  AZURE_SUBSCRIPTION_ID            = $($account.id)"
+  Write-Host "  AZURE_STATIC_WEB_APPS_API_TOKEN:"
+  Write-Host "    az staticwebapp secrets list --name $SwaName --resource-group $ResourceGroup --query 'properties.apiKey' -o tsv"
+  Write-Host "  AZURE_CLIENT_ID      = (from AAD App Registration)"
+  Write-Host "  AZURE_TENANT_ID      = $($account.tenantId)"
+  Write-Host "  AZURE_SUBSCRIPTION_ID = $($account.id)"
   Write-Host ""
   Write-Host "AAD App Registration (run manually):"
   Write-Host "  az ad app create --display-name 'rss-platform-$Environment'"
@@ -265,7 +267,7 @@ try {
   Write-Host "  # See: https://learn.microsoft.com/azure/active-directory/workload-identities/workload-identity-federation-create-trust"
   Write-Host "============================================================"
   Write-Host ""
-  Write-Host "Log saved to: $LogFile  (secrets not included in log)"
+  Write-Host "Log saved to: $LogFile"
 
 } finally {
   # Clean up temp params file containing the plain-text password

@@ -57,7 +57,7 @@ export async function submitJob(
  * Execute the work for a previously submitted job.
  * Safe to call as fire-and-forget: errors are caught internally and written to
  * the ai_jobs record as status 'failed' with a user-friendly message. If the
- * error-write itself fails (e.g. database is down), the job remains in 'queued'
+ * error-write itself fails (e.g. database is down), the job remains in 'processing'
  * status; the caller's outer .catch() should log that secondary failure.
  */
 export async function executeJob(
