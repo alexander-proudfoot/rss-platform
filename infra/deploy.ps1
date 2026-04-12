@@ -91,6 +91,8 @@ try {
   # ── 2. Resolve deployer object ID for Key Vault RBAC ────────────────────────
   Write-Host "`n=== Step 2: Resolve deployer object ID ==="
   $DeployerObjectId = az ad signed-in-user show --query id -o tsv
+  if ($LASTEXITCODE -ne 0) { Write-Error "az ad signed-in-user show failed (exit $LASTEXITCODE)" }
+  if ([string]::IsNullOrWhiteSpace($DeployerObjectId)) { Write-Error "Deployer object ID is empty — KV RBAC role assignment will fail" }
   Write-Host "Deployer OID:    $DeployerObjectId"
 
   # ── 3. Write Bicep parameters to a temp file (keeps password out of CLI args / transcript) ──
@@ -166,6 +168,8 @@ try {
   $builder.TrustServerCertificate = $false
   $builder.ConnectTimeout = 30
   $ConnStr = $builder.ConnectionString
+  $builder.Password = ''  # clear password from builder before releasing the reference
+  Remove-Variable builder
   $ConnStrFile  = [System.IO.Path]::GetTempFileName()
   try {
     Set-Content -Path $ConnStrFile -Value $ConnStr -NoNewline -Encoding UTF8
@@ -235,6 +239,7 @@ try {
           --name 'DeployerTemp' `
           --yes `
           --output none
+        if ($LASTEXITCODE -ne 0) { Write-Warning "Firewall rule 'DeployerTemp' deletion failed (exit $LASTEXITCODE) — remove manually" }
       }
     }
   }

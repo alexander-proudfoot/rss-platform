@@ -21,12 +21,15 @@ function parseConnectionString(connStr: string): sql.config {
     const key = connStr.slice(kStart, i).trim().toLowerCase()
     i++ // skip '='
     let val: string
-    if (i < connStr.length && connStr[i] === '"') {
+    if (i < connStr.length && (connStr[i] === '"' || connStr[i] === "'")) {
+      // Quoted value: SqlConnectionStringBuilder uses '"' for passwords containing single-quotes
+      // and "'" for passwords containing double-quotes. Escaped by doubling the quote char.
+      const q = connStr[i]
       i++ // skip opening quote
       let raw = ''
       while (i < connStr.length) {
-        if (connStr[i] === '"' && connStr[i + 1] === '"') { raw += '"'; i += 2 } // escaped quote
-        else if (connStr[i] === '"') { i++; break } // closing quote
+        if (connStr[i] === q && connStr[i + 1] === q) { raw += q; i += 2 } // escaped quote
+        else if (connStr[i] === q) { i++; break } // closing quote
         else { raw += connStr[i++] }
       }
       val = raw
