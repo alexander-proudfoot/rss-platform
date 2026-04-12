@@ -43,6 +43,10 @@
 .NOTES
   Output is logged to Audit/logs/deploy-{timestamp}.log, then committed and pushed to the repo.
   Secrets (passwords, connection strings, SWA token) are never written to the log.
+  Security: when using AZURE_CLIENT_SECRET for SP auth, the secret is passed as a
+  process-level command-line argument to az login. This is visible in the process list
+  for the duration of the login call. Use OIDC federated credentials (the default for
+  GitHub Actions via azure-swa-deploy.yml) in shared or untrusted environments.
   Directive: D099
 #>
 param(
@@ -368,7 +372,7 @@ try {
     Remove-Item $TempParamsFile -Force -ErrorAction SilentlyContinue
   }
   # Stop-Transcript is idempotent — safe to call even if already stopped above
-  try { Stop-Transcript } catch { }
+  try { Stop-Transcript } catch { Write-Host "Stop-Transcript skipped: $_" }
   # Commit the audit log to the repo — per CLAUDE.md Script Logging protocol.
   # Requires branch protection bypass (deployer must have admin access to push main directly).
   $LogRelPath = "Audit/logs/deploy-$Timestamp.log"
