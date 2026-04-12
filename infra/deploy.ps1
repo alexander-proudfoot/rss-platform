@@ -233,18 +233,20 @@ try {
   $paramsObj    = Get-Content $TempParamsFile | ConvertFrom-Json
   $Login        = $paramsObj.parameters.sqlAdminLogin.value
   $Password     = $paramsObj.parameters.sqlAdminPassword.value
-  # Use SqlConnectionStringBuilder to safely handle special characters in credentials.
+  # Use SqlConnectionStringBuilder (indexer form) to safely handle special characters.
   # Raw string interpolation would allow passwords containing ';' to inject extra key=value pairs.
+  # Note: property-based access (e.g. .DataSource) is unsupported in System.Data.SqlClient
+  # on .NET 7 — use string-keyed indexer form which works correctly.
   $builder = [System.Data.SqlClient.SqlConnectionStringBuilder]::new()
-  $builder.DataSource = "tcp:$SqlServerFqdn,1433"
-  $builder.InitialCatalog = $DatabaseName
-  $builder.UserID = $Login
-  $builder.Password = $Password
-  $builder.Encrypt = $true
-  $builder.TrustServerCertificate = $false
-  $builder.ConnectTimeout = 30
+  $builder['Data Source']           = "tcp:$SqlServerFqdn,1433"
+  $builder['Initial Catalog']       = $DatabaseName
+  $builder['User ID']               = $Login
+  $builder['Password']              = $Password
+  $builder['Encrypt']               = $true
+  $builder['TrustServerCertificate'] = $false
+  $builder['Connect Timeout']       = 30
   $ConnStr = $builder.ConnectionString
-  $builder.Password = ''  # clear password from builder before releasing the reference
+  $builder['Password'] = ''  # clear password from builder before releasing the reference
   Remove-Variable builder
   $ConnStrFile  = [System.IO.Path]::GetTempFileName()
   try {
